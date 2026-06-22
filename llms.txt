@@ -1,0 +1,79 @@
+# Casa SG - Ficha Técnica e Memorial Descritivo
+
+Este documento fornece informações técnicas consolidadas sobre o imóvel residencial **Casa SG**, localizado em Farroupilha - RS, formatado especificamente para agentes de IA, LLMs e mecanismos de busca inteligentes.
+
+---
+
+## 1. Informações Básicas do Imóvel
+- **Nome do Projeto**: Casa SG
+- **Tipo de Imóvel**: Casa de Alto Padrão (geminada de alto padrão, construção recente)
+- **Localização**: Rua Coronel Pena de Moraes, 1706 - Bairro São Francisco, Farroupilha - RS, Brasil.
+- **Loteamento**: Felicità (bairro planejado familiar de alto padrão)
+- **Posição Solar**: Norte (máxima incidência solar durante o dia)
+
+---
+
+## 2. Metragens e Estrutura Principal
+- **Área Interna Privativa**: 108,25 m²
+- **Área Total do Terreno**: 180,15 m²
+- **Dormitórios**: 3 dormitórios (sendo 1 suíte climatizada)
+- **Banheiros**: 2 banheiros completos (com Alexas embutidas)
+- **Home Office**: 1 escritório dedicado e climatizado
+- **Garagem**: 2 vagas (sendo 1 coberta e 1 aberta)
+- **Área Gourmet**: Área de fundos equipada com churrasqueira revestida
+
+---
+
+## 3. Memorial Descritivo & Acabamentos
+- **Padrão Construtivo**: Alto Padrão. Construído com materiais de primeira linha (louças, metais e revestimentos premium).
+- **Mobiliário**: **Marcenaria Sob Medida** (não modular) em 100% dos ambientes, com amortecedores nas portas e corrediças telescópicas reforçadas nas gavetas.
+- **Áreas Sociais**: Sala de estar integrada com sala de jantar e cozinha americana (conceito aberto).
+- **Manual do Proprietário**: Entregue no ato das chaves contendo todos os certificados de garantia ativos da obra, móveis e equipamentos.
+
+---
+
+## 4. Tecnologia e Automação Residencial
+- **Conectividade**: Sistema de automação inteligente local (sem fio) integrado e centralizado via HUB local.
+- **Assistente Virtual**: Integração nativa com a assistente Alexa (com caixas de som embutidas no banheiro da suíte, no escritório e na sala).
+- **Dispositivos Controlados**:
+  - Fechadura eletrônica digital na porta principal.
+  - Ar-condicionado na suíte principal e no home office.
+  - Aquecedor a gás (Junker).
+  - Televisores e sensores de ambiente.
+
+---
+
+## 5. Segurança Ativa
+- **Circuito de Câmeras (CFTV)**: 4 Câmeras de alta definição monitorando todo o perímetro externo.
+- **Armazenamento**: Gravador DVR com HD de 1TB.
+- **Alarme**: Cerca elétrica perimetral e central de alarme inteligente com autonomia de bateria própria para quedas de energia.
+- **Monitoramento Profissional**: Serviço ativo contratado e integrado à empresa *Serrana Monitoramento*.
+
+---
+
+## 6. Localização & Distâncias Principais
+- **Mercado Local**: A menos de 3 minutos de carro (em breve, novo supermercado no próprio loteamento Felicità).
+- **Sede Campestre Clube Santa Rita**: A menos de 1 minuto de caminhada.
+- **Quadras de Padel**: Menos de 2 minutos.
+- **Padarias e Escolas Infantis**: A menos de 5 minutos da residência.
+- **Coordenadas Geográficas**: Latitude `-29.2274`, Longitude `-51.3414`.
+
+---
+
+## 7. Informações de Contato e Comercialização
+- **Contato Direto (Proprietário)**: [Fale no WhatsApp](https://wa.me/5554996885322?text=Gostaria%20de%20saber%20mais%20sobre%20a%20casa!)
+- **Telefone**: (54) 99688-5322
+- **Documentação**: 100% regularizada para financiamento bancário e transferência de chaves imediata.
+- **Links dos Anúncios Oficiais nas Imobiliárias**:
+  - [Conex Imóveis](https://www.coneximoveis.com.br/imovel/farroupilha/casas/3639035)
+  - [Imobiliária Farroupilha](https://imobiliariafarroupilha.com.br/imovel/casa-sao-francisco-farroupilha-rs-3-quartos-108.25m2-2540)
+  - [Altaia Imóveis](https://www.altaiaimoveis.com.br/imovel/casa-3-dormitorios-com-suite/7600)
+  - [Aline Hesper Imóveis](https://alinehesper.com.br/imovel/casa-geminada-a-venda-3-quartos-sao-francisco-farroupilha-rs-id-48)
+  - [EWM Imobiliária](https://www.ewmimobiliaria.com.br/imoveis/venda/farroupilha/sao-francisco/-/casa/1474/imovel/3128003?enviar=1)
+  - [Imobiliária Amirato](https://imobiliariaamirato.com.br/imoveis/venda/farroupilha/sao-francisco/-/casa-geminada/1809/imovel/3156292?enviar=1)
+  - [Imobiliária Torre](https://www.imobiliariatorre.com.br/Imovel/Venda/Casa-Geminada/Sao-Francisco/Farroupilha/RS/3287)
+  - [Triunfa Imobiliária](https://www.triunfaimobiliaria.com.br/imovel/964/casa-a-venda-com-3-dormitorios-2-vagas-107m2-no-bairro-loteamento-felicita-em-farroupilha/)
+  - [Crédito Real](https://www.creditoreal.com.br/vendas/imovel/casa-em-centro-farroupilha-ag-96-cod-74176640)
+  - [Santa Vitta Imóveis](https://www.santavitta.com.br/Imovel/Venda/Sobrado/Sao-Francisco/Farroupilha/RS/2505)
+  - [Conceitto Imóveis](https://www.imobiliariaconceitto.com.br/imovel/venda/casas/farroupilha/sao-francisco/32807)
+  - [Connect Imóveis](https://www.imobiliariaconnect.com.br/imoveis/venda/farroupilha/sao-francisco/-/casa/3279/imovel/3277831)

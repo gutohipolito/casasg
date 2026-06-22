@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /_headers
+
+# Permissões específicas para bots de IA que consomem dados estruturados
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: Google-Extended
+Allow: /
+Allow: /llms.txt
+
+# Caminhos do Sitemap e do arquivo especial de IA
+Sitemap: https://casasg.com/sitemap.xml
+Link: <https://casasg.com/llms.txt>; rel="alternate"; type="text/plain"; title="Dados estruturados para IA"

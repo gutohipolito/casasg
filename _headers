@@ -1,0 +1,26 @@
+# Cabeçalhos de Segurança e Cache Globais
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: no-referrer-when-downgrade
+  Content-Security-Policy: default-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; frame-src https://www.youtube.com/ https://www.youtube-nocookie.com/ https://maps.google.com/ https://www.google.com/maps/;
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Cache e Acesso Especial para o Arquivo llms.txt consumido por IAs
+/llms.txt
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600, must-revalidate
+  # Instrução para Edge Cache TTL do Cloudflare (Padrão: 1 dia na Edge)
+  Cloudflare-CDN-Cache-Control: max-age=86400
+
+# Cache e Acesso Especial para o Sitemap
+/sitemap.xml
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=7200, must-revalidate
+  Cloudflare-CDN-Cache-Control: max-age=86400
+
+# Cache de Longo Prazo para Imagens locais (1 ano na Edge)
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+  Cloudflare-CDN-Cache-Control: max-age=31536000
