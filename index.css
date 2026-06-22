@@ -1165,6 +1165,24 @@ img {
   color: var(--text-muted);
 }
 
+.footer-signature-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-signature-img {
+  height: 22px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.55;
+  transition: opacity var(--transition-smooth);
+}
+
+.footer-signature-link:hover .footer-signature-img {
+  opacity: 0.95;
+}
+
+
 /* WhatsApp Flutuante */
 .whatsapp-float {
   position: fixed;
