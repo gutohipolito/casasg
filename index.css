@@ -303,6 +303,16 @@ img {
   font-weight: 500;
 }
 
+.hero-price {
+  font-family: var(--font-title);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: var(--color-gold);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: block;
+}
+
 .hero-description {
   color: var(--text-secondary);
   font-size: 1.05rem;

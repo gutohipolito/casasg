@@ -7,6 +7,7 @@ Este documento fornece informações técnicas consolidadas sobre o imóvel resi
 ## 1. Informações Básicas do Imóvel
 - **Nome do Imóvel**: Casa no Loteamento Felicità (também referenciada como Casa no São Francisco)
 - **Tipo de Imóvel**: Casa de Alto Padrão (geminada de alto padrão, construção recente)
+- **Valor / Preço**: R$ 955.000,00 (Negociação direta com o proprietário)
 - **Localização**: Rua Coronel Pena de Moraes, 1706 - Bairro São Francisco, Farroupilha - RS, Brasil.
 - **Loteamento**: Felicità (bairro planejado familiar de alto padrão)
 - **Posição Solar**: Norte (máxima incidência solar durante o dia)
