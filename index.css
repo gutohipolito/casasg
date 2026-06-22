@@ -1227,7 +1227,12 @@ img {
    ========================================================================== */
 @media (max-width: 992px) {
   .nav-menu {
-    display: none; /* No JS toggle yet, simple mobile fallback */
+    display: none;
+  }
+  
+  .nav-toggle {
+    display: block;
+    z-index: 101;
   }
   
   .estrutura-container, .planta-panel, .map-layout, .cluster-grid {
