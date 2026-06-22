@@ -36,47 +36,87 @@
   <!-- Estilos Globais -->
   <link rel="stylesheet" href="index.css">
   
-  <!-- Schema.org JSON-LD para Imóvel Residencial -->
+  <!-- Schema.org JSON-LD para Anúncio Imobiliário e Residência -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SingleFamilyResidence",
-    "name": "Casa no Loteamento Felicità",
-    "description": "Casa de alto padrão à venda no Loteamento Felicità, bairro São Francisco em Farroupilha, RS. Imóvel novo com marcenaria sob medida, 3 quartos, automação local e área gourmet.",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Coronel Pena de Moraes, 1706",
-      "addressLocality": "Farroupilha",
-      "addressRegion": "RS",
-      "addressCountry": "BR",
-      "postalCode": "95180-000"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": -29.2274,
-      "longitude": -51.3414
-    },
-    "numberOfRooms": 8,
-    "numberOfBedrooms": 3,
-    "numberOfBathroomsTotal": 2,
-    "floorSize": {
-      "@type": "QuantitativeValue",
-      "value": 108.25,
-      "unitCode": "MTK"
-    },
-    "lotSize": {
-      "@type": "QuantitativeValue",
-      "value": 180.15,
-      "unitCode": "MTK"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "955000.00",
-      "priceCurrency": "BRL",
-      "priceValidUntil": "2027-12-31",
-      "availability": "https://schema.org/InStoreOnly",
-      "businessFunction": "https://schema.org/Sell"
-    }
+    "@graph": [
+      {
+        "@type": "RealEstateListing",
+        "@id": "https://casasg.com/#listing",
+        "url": "https://casasg.com/",
+        "name": "Anúncio de Venda - Casa de Alto Padrão no Loteamento Felicità",
+        "description": "Anúncio particular de venda de casa nova de alto padrão no Loteamento Felicità, bairro São Francisco em Farroupilha, RS.",
+        "datePosted": "2026-06-22",
+        "about": {
+          "@type": ["SingleFamilyResidence", "House"],
+          "@id": "https://casasg.com/#residence",
+          "name": "Casa no Loteamento Felicità",
+          "description": "Casa de alto padrão à venda no Loteamento Felicità, bairro São Francisco em Farroupilha, RS. Imóvel novo com marcenaria sob medida, 3 quartos, automação local e área gourmet.",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Coronel Pena de Moraes, 1706",
+            "addressLocality": "Farroupilha",
+            "addressRegion": "RS",
+            "addressCountry": "BR",
+            "postalCode": "95180-000"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -29.2274,
+            "longitude": -51.3414
+          },
+          "numberOfRooms": 8,
+          "numberOfBedrooms": 3,
+          "numberOfBathroomsTotal": 2,
+          "floorSize": {
+            "@type": "QuantitativeValue",
+            "value": 108.25,
+            "unitCode": "MTK"
+          },
+          "lotSize": {
+            "@type": "QuantitativeValue",
+            "value": 180.15,
+            "unitCode": "MTK"
+          },
+          "amenityFeature": [
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Automação Residencial",
+              "value": true
+            },
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Marcenaria Sob Medida",
+              "value": true
+            },
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Toalheiro Aquecido na Suíte",
+              "value": true
+            },
+            {
+              "@type": "LocationFeatureSpecification",
+              "name": "Alexa Integrada",
+              "value": true
+            }
+          ]
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "955000.00",
+          "priceCurrency": "BRL",
+          "priceValidUntil": "2027-12-31",
+          "availability": "https://schema.org/InStoreOnly",
+          "businessFunction": "https://schema.org/Sell",
+          "seller": {
+            "@type": "Person",
+            "name": "Proprietário Particular",
+            "telephone": "+5554996885322"
+          }
+        }
+      }
+    ]
   }
   </script>
 </head>
