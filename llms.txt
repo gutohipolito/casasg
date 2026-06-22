@@ -17,6 +17,8 @@ Este documento fornece informações técnicas consolidadas sobre o imóvel resi
 ## 2. Metragens e Estrutura Principal
 - **Área Interna Privativa**: 108,25 m²
 - **Área Total do Terreno**: 180,15 m²
+- **Área Frontal**: Pátio frontal ajardinado com vagas de garagem pavimentadas para 2 carros (1 coberta e 1 aberta)
+- **Pátio Externo nos Fundos**: 71,90 m² livres e gramados com área gourmet
 - **Dormitórios**: 3 dormitórios (sendo 1 suíte climatizada)
 - **Banheiros**: 2 banheiros completos (banheiro da suíte equipado com alto-falante Alexa embutido no gesso e toalheiro térmico aquecido; banheiro social com fino acabamento e sem nicho integrado)
 - **Home Office**: 1 escritório dedicado e climatizado
@@ -27,7 +29,10 @@ Este documento fornece informações técnicas consolidadas sobre o imóvel resi
 
 ## 3. Memorial Descritivo & Acabamentos
 - **Padrão Construtivo**: Alto Padrão. Construído com materiais de primeira linha (louças, metais e revestimentos premium).
-- **Mobiliário**: **Marcenaria Sob Medida** (não modular) em 100% dos ambientes, com amortecedores nas portas e corrediças telescópicas reforçadas nas gavetas.
+- **Pisos**: Placas de vinílico de 90x90cm em toda a casa (salas, quartos, corredores e área de serviço), garantindo conforto acústico, térmico e excelente uniformidade estética.
+- **Mobiliário**: **Marcenaria de Alto Padrão Sob Medida** (não modular) em 100% dos ambientes, com portas com amortecedores, puxadores integrados de alumínio e gaveteiros com trilhos ocultos de fechamento suave (soft-close).
+- **Hidráulica**: Água quente e fria pressurizada em todos os pontos de consumo da casa (cozinha gourmet, área de serviço e ambos os banheiros).
+- **Infraestrutura Solar**: Espera completa para painéis solares fotovoltaicos — tubulações e cabeamento elétrico já instalados no telhado.
 - **Áreas Sociais**: Sala de estar integrada com sala de jantar e cozinha americana (conceito aberto).
 - **Manual do Proprietário**: Entregue no ato das chaves contendo todos os certificados de garantia ativos da obra, móveis e equipamentos.
 
@@ -54,7 +59,7 @@ Este documento fornece informações técnicas consolidadas sobre o imóvel resi
 
 ## 6. Localização & Distâncias Principais
 - **Mercado Local**: A menos de 3 minutos de carro (em breve, novo supermercado no próprio loteamento Felicità).
-- **Sede Campestre Clube Santa Rita**: A menos de 1 minuto de caminhada.
+- **Sede Campestre Clube Santa Rita**: A menos de 1 minuto.
 - **Quadras de Padel**: Menos de 2 minutos.
 - **Padarias e Escolas Infantis**: A menos de 5 minutos da residência.
 - **Coordenadas Geográficas**: Latitude `-29.2274`, Longitude `-51.3414`.

@@ -271,27 +271,39 @@ img {
   position: relative;
   z-index: 2;
   width: 100%;
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3rem;
+  align-items: center;
   animation: fadeIn 1.2s ease-out;
 }
 
+/* Coluna Esquerda: Título Principal */
+.hero-title-col {
+  flex: 1;
+}
+
+.hero-title-col h1 {
+  font-family: var(--font-title);
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.6);
+}
+
+/* Coluna Direita: Card de Informações */
 .hero-card {
-  max-width: 540px;
+  width: 380px;
+  flex-shrink: 0;
   background-color: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 3rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 2.5rem;
   border-radius: var(--border-radius-lg);
   border: 1px solid var(--border-glass);
   box-shadow: var(--shadow-premium);
-}
-
-.hero-card h1 {
-  font-size: clamp(2rem, 3.5vw, 3.25rem);
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  line-height: 1.1;
 }
 
 .hero-location {
@@ -1438,13 +1450,13 @@ img {
 
 .specs-table th {
   background-color: var(--bg-secondary);
-  font-family: var(--font-title);
+  font-family: var(--font-body);
   color: var(--color-gold);
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   border-bottom: 2px solid var(--border-subtle);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 .specs-table td {
@@ -1588,3 +1600,48 @@ img {
   }
 }
 
+/* ==========================================================================
+   Responsivo: Hero 2 Colunas
+   ========================================================================== */
+
+/* Tela média: reduzir card */
+@media (max-width: 1100px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .hero-title-col h1 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+  }
+
+  .hero-card {
+    width: 100%;
+    max-width: 520px;
+  }
+}
+
+/* Mobile: empilhar verticalmente */
+@media (max-width: 768px) {
+  .hero {
+    height: auto;
+    min-height: 100vh;
+    padding: 8rem 0 4rem;
+    background-attachment: scroll;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .hero-title-col h1 {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+  }
+
+  .hero-card {
+    width: 100%;
+    padding: 2rem;
+  }
+}
