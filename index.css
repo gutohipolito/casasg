@@ -1469,3 +1469,60 @@ img {
   }
 }
 
+/* Seção de Diferenciais Exclusivos */
+.diferenciais-section {
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  max-width: 700px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.diferenciais-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+}
+
+.diferencial-card {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  transition: transform var(--transition-smooth);
+}
+
+.diferencial-card:hover {
+  transform: translateY(-5px);
+}
+
+.diferencial-num {
+  font-family: var(--font-title);
+  font-size: 2.2rem;
+  color: var(--color-gold);
+  line-height: 1;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.diferencial-content h3 {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.diferencial-content p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
