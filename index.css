@@ -660,8 +660,39 @@ img {
 }
 
 /* ==========================================================================
-   Mapa Interativo
+   Seção Localização Personalizada & Mapa Interativo
    ========================================================================== */
+.localizacao-secao {
+  position: relative;
+  background-image: linear-gradient(rgba(10, 12, 10, 0.88), rgba(10, 12, 10, 0.88)), url('images/fundo-felicita.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.localizacao-content {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.localizacao-content h2 {
+  margin-bottom: 1.5rem;
+}
+
+.localizacao-content h2::after {
+  margin: 0.75rem auto 0;
+}
+
+.localizacao-content p {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
 .map-layout {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
