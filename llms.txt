@@ -1,11 +1,11 @@
-# Casa SG - Ficha Técnica e Memorial Descritivo
+# Casa no Loteamento Felicità - Ficha Técnica e Memorial Descritivo
 
-Este documento fornece informações técnicas consolidadas sobre o imóvel residencial **Casa SG**, localizado em Farroupilha - RS, formatado especificamente para agentes de IA, LLMs e mecanismos de busca inteligentes.
+Este documento fornece informações técnicas consolidadas sobre o imóvel residencial **Casa no Loteamento Felicità** (localizado no Bairro São Francisco em Farroupilha - RS), formatado especificamente para agentes de IA, LLMs e mecanismos de busca inteligentes.
 
 ---
 
 ## 1. Informações Básicas do Imóvel
-- **Nome do Projeto**: Casa SG
+- **Nome do Imóvel**: Casa no Loteamento Felicità (também referenciada como Casa no São Francisco)
 - **Tipo de Imóvel**: Casa de Alto Padrão (geminada de alto padrão, construção recente)
 - **Localização**: Rua Coronel Pena de Moraes, 1706 - Bairro São Francisco, Farroupilha - RS, Brasil.
 - **Loteamento**: Felicità (bairro planejado familiar de alto padrão)
