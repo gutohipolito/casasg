@@ -1526,3 +1526,65 @@ img {
   font-weight: 300;
 }
 
+/* Layout do FAQ na Home (2 Colunas com Card CTA) */
+.faq-layout-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.faq-left-col {
+  width: 100%;
+}
+
+.faq-right-col {
+  width: 100%;
+  position: sticky;
+  top: 100px;
+}
+
+.faq-cta-card {
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  padding: 2.5rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-premium);
+}
+
+.faq-cta-card h3 {
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.faq-cta-card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.faq-cta-card .btn {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 992px) {
+  .faq-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .faq-right-col {
+    position: static;
+  }
+}
+
