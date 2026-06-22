@@ -700,6 +700,51 @@ img {
   align-items: center;
 }
 
+.map-layout-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  width: 100%;
+}
+
+.map-header {
+  width: 100%;
+  max-width: 1000px;
+  text-align: left;
+}
+
+.map-header h2 {
+  margin-bottom: 0.5rem;
+}
+
+.map-header p {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+.map-bottom-content {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.map-bottom-content .map-locations-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.map-bottom-content .map-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
 .interactive-map {
   position: relative;
   border-radius: var(--border-radius-lg);

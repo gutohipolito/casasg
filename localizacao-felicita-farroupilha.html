@@ -60,10 +60,16 @@
     </section>
 
     <!-- Detalhamento e Mapa Interativo -->
-    <section class="section-padding">
-      <div class="container map-layout">
+    <section class="section-padding" aria-labelledby="servicos-titulo">
+      <div class="container map-layout-vertical">
         
-        <!-- Mapa Interativo -->
+        <!-- Cabeçalho da Seção (Acima da Imagem) -->
+        <div class="map-header">
+          <h2 id="servicos-titulo">Serviços Próximos</h2>
+          <p>A facilidade de fazer tudo a pé ou a poucos minutos de carro traz mais qualidade de vida e poupa seu tempo no trânsito.</p>
+        </div>
+        
+        <!-- Mapa Interativo (Ao Centro) -->
         <div class="interactive-map" id="mapWrapper">
           <img src="images/interactive_image_02-1280x733-1.jpg" alt="Mapa de localização e comércio ao redor do imóvel">
           <div class="map-pins">
@@ -118,11 +124,8 @@
           </div>
         </div>
 
-        <!-- Lista de pontos com controle interativo -->
-        <div>
-          <h3>Serviços Próximos</h3>
-          <p style="margin-bottom: 2rem;">A facilidade de fazer tudo a pé ou a poucos minutos de carro traz mais qualidade de vida e poupa seu tempo no trânsito.</p>
-          
+        <!-- Conteúdo de localizações abaixo da imagem -->
+        <div class="map-bottom-content">
           <div class="map-locations-list" role="list">
             <div class="location-card" role="listitem" data-pin="pin-01" tabindex="0">
               <span class="location-num">01</span>
@@ -173,7 +176,7 @@
             </div>
           </div>
 
-          <div style="margin-top: 2.5rem;">
+          <div class="map-action">
             <a href="https://maps.app.goo.gl/1SFiZFR9TrvDwLMK9" class="btn btn-primary" target="_blank" rel="noopener noreferrer" aria-label="Abrir localização exata do imóvel no Google Maps">Como Chegar pelo Maps</a>
           </div>
         </div>
