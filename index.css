@@ -1407,3 +1407,55 @@ img {
     right: 1rem;
   }
 }
+
+/* Tabela de Especificações de Ambientes (Foco em WCAG e IA) */
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-premium);
+}
+
+.specs-table th, .specs-table td {
+  padding: 1.1rem 1.25rem;
+  text-align: left;
+}
+
+.specs-table th {
+  background-color: var(--bg-secondary);
+  font-family: var(--font-title);
+  color: var(--color-gold);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--border-subtle);
+  font-size: 0.85rem;
+}
+
+.specs-table td {
+  border-bottom: 1px solid var(--border-subtle);
+  line-height: 1.6;
+}
+
+.specs-table tr:last-child td {
+  border-bottom: none;
+}
+
+.specs-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.015);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .specs-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+

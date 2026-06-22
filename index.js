@@ -7,25 +7,92 @@ document.addEventListener('DOMContentLoaded', () => {
   const navMenu = document.querySelector('.nav-menu');
 
   if (toggleBtn && navMenu) {
+    const navLinks = navMenu.querySelectorAll('a');
+
+    const openMenu = () => {
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      navMenu.classList.add('active');
+      navMenu.style.display = 'flex';
+      navMenu.style.flexDirection = 'column';
+      navMenu.style.position = 'absolute';
+      navMenu.style.top = '100%';
+      navMenu.style.left = '0';
+      navMenu.style.width = '100%';
+      navMenu.style.backgroundColor = 'var(--bg-glass)';
+      navMenu.style.backdropFilter = 'blur(10px)';
+      navMenu.style.padding = '2rem';
+      navMenu.style.borderBottom = '1px solid var(--border-glass)';
+      
+      // Focar no primeiro link do menu ao abrir para acessibilidade
+      if (navLinks.length > 0) {
+        navLinks[0].focus();
+      }
+    };
+
+    const closeMenu = () => {
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      navMenu.classList.remove('active');
+      
+      // Limpa estilos inline para evitar interferência em layouts desktop responsivos
+      navMenu.style.display = '';
+      navMenu.style.flexDirection = '';
+      navMenu.style.position = '';
+      navMenu.style.top = '';
+      navMenu.style.left = '';
+      navMenu.style.width = '';
+      navMenu.style.backgroundColor = '';
+      navMenu.style.backdropFilter = '';
+      navMenu.style.padding = '';
+      navMenu.style.borderBottom = '';
+      
+      // Restaura o foco para o botão que ativou o menu
+      toggleBtn.focus();
+    };
+
     toggleBtn.addEventListener('click', () => {
       const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-      toggleBtn.setAttribute('aria-expanded', !expanded);
-      navMenu.classList.toggle('active');
-      
-      // Simples toggle visual no CSS de mobile
-      if (navMenu.style.display === 'flex') {
-        navMenu.style.display = 'none';
+      if (expanded) {
+        closeMenu();
       } else {
-        navMenu.style.display = 'flex';
-        navMenu.style.flexDirection = 'column';
-        navMenu.style.position = 'absolute';
-        navMenu.style.top = '100%';
-        navMenu.style.left = '0';
-        navMenu.style.width = '100%';
-        navMenu.style.backgroundColor = 'var(--bg-glass)';
-        navMenu.style.backdropFilter = 'blur(10px)';
-        navMenu.style.padding = '2rem';
-        navMenu.style.borderBottom = '1px solid var(--border-glass)';
+        openMenu();
+      }
+    });
+
+    // Fechar menu com a tecla Escape e gerenciar Trap Focus via teclado
+    document.addEventListener('keydown', (e) => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      if (!expanded) return;
+
+      if (e.key === 'Escape') {
+        closeMenu();
+        e.preventDefault();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusableElements = [toggleBtn, ...Array.from(navLinks)];
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) { // Shift + Tab
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else { // Tab apenas
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    });
+
+    // Fechar menu móvel se clicar fora dele ou do botão de controle
+    document.addEventListener('click', (e) => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      if (expanded && !toggleBtn.contains(e.target) && !navMenu.contains(e.target)) {
+        closeMenu();
       }
     });
   }
