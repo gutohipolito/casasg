@@ -223,4 +223,115 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ==========================================================================
+  // 6. Funcionalidade de Lightbox (Tela Cheia para Galeria)
+  // ==========================================================================
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn = document.querySelector('.lightbox-close');
+  const prevLightboxBtn = document.querySelector('.lightbox-prev');
+  const nextLightboxBtn = document.querySelector('.lightbox-next');
+  const zoomBtns = document.querySelectorAll('.slide-zoom-btn');
+  
+  // Mapeamento dos caminhos das imagens
+  const sliderImages = [
+    'images/interno-casasg-1.jpg',
+    'images/detalhes-img-casa-sg.jpg',
+    'images/inner_projects_background_casasg-2025.jpg'
+  ];
+  let activeLightboxIndex = 0;
+  let lastActiveElement = null;
+
+  if (lightbox && lightboxImg && zoomBtns.length > 0) {
+    
+    const openLightbox = (index) => {
+      lastActiveElement = document.activeElement;
+      activeLightboxIndex = index;
+      lightboxImg.src = sliderImages[activeLightboxIndex];
+      lightbox.classList.add('active');
+      lightbox.setAttribute('tabindex', '0');
+      lightbox.focus();
+      
+      // Impede rolagem do fundo
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('active');
+      lightbox.setAttribute('tabindex', '-1');
+      document.body.style.overflow = '';
+      
+      if (lastActiveElement) {
+        lastActiveElement.focus();
+      }
+    };
+
+    const navigateLightbox = (direction) => {
+      activeLightboxIndex = (activeLightboxIndex + direction + sliderImages.length) % sliderImages.length;
+      lightboxImg.src = sliderImages[activeLightboxIndex];
+    };
+
+    // Abre o lightbox ao clicar no botão zoom
+    zoomBtns.forEach((btn, index) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLightbox(index);
+      });
+    });
+
+    // Fechar botão
+    if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+    
+    // Navegar
+    if (prevLightboxBtn) {
+      prevLightboxBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateLightbox(-1);
+      });
+    }
+    if (nextLightboxBtn) {
+      nextLightboxBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigateLightbox(1);
+      });
+    }
+
+    // Clique fora do conteúdo da imagem para fechar
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
+        closeLightbox();
+      }
+    });
+
+    // Eventos de Teclado
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        navigateLightbox(-1);
+      } else if (e.key === 'ArrowRight') {
+        navigateLightbox(1);
+      } else if (e.key === 'Tab') {
+        // Trap Focus
+        const focusableElements = lightbox.querySelectorAll('button, [tabindex="0"]');
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    });
+  }
+
 });

@@ -153,29 +153,37 @@
           <p>Uma casa de alta durabilidade projetada para oferecer excelente aproveitamento térmico e solar (Posição Norte). Conta com área gourmet nos fundos com churrasqueira e pátio externo privativo.</p>
           <div class="estrutura-features">
             <div class="feat-item">
-              <span class="feat-icon" aria-hidden="true">&#10003;</span>
-              <div>
+              <div class="feat-icon-container">
+                <span class="feat-icon" aria-hidden="true">&#10003;</span>
+              </div>
+              <div class="feat-info">
                 <span class="feat-title">Suíte Principal</span>
                 <p class="feat-desc">Conforto com ar-condicionado integrado.</p>
               </div>
             </div>
             <div class="feat-item">
-              <span class="feat-icon" aria-hidden="true">&#10003;</span>
-              <div>
+              <div class="feat-icon-container">
+                <span class="feat-icon" aria-hidden="true">&#10003;</span>
+              </div>
+              <div class="feat-info">
                 <span class="feat-title">Home Office</span>
                 <p class="feat-desc">Escritório privativo e automatizado.</p>
               </div>
             </div>
             <div class="feat-item">
-              <span class="feat-icon" aria-hidden="true">&#10003;</span>
-              <div>
+              <div class="feat-icon-container">
+                <span class="feat-icon" aria-hidden="true">&#10003;</span>
+              </div>
+              <div class="feat-info">
                 <span class="feat-title">Área Gourmet</span>
                 <p class="feat-desc">Churrasqueira e área externa integrada.</p>
               </div>
             </div>
             <div class="feat-item">
-              <span class="feat-icon" aria-hidden="true">&#10003;</span>
-              <div>
+              <div class="feat-icon-container">
+                <span class="feat-icon" aria-hidden="true">&#10003;</span>
+              </div>
+              <div class="feat-info">
                 <span class="feat-title">Posição Solar</span>
                 <p class="feat-desc">Incidência solar norte (iluminação total).</p>
               </div>
@@ -185,9 +193,39 @@
 
         <!-- Slider de Imagens -->
         <div class="slider-wrapper" aria-label="Galeria de fotos do imóvel">
-          <div class="slide active" style="background-image: url('images/background_03.jpg');" role="img" aria-label="Fachada externa da Casa no Loteamento Felicità"></div>
-          <div class="slide" style="background-image: url('images/interno-casasg-1.jpg');" role="img" aria-label="Interior da sala de estar e jantar integrada"></div>
-          <div class="slide" style="background-image: url('images/detalhes-img-casa-sg.jpg');" role="img" aria-label="Acabamento da marcenaria da cozinha"></div>
+          <div class="slide active" style="background-image: url('images/interno-casasg-1.jpg');" role="img" aria-label="Interior da sala de estar e jantar integrada">
+            <div class="slide-caption">Sala de Estar & Jantar</div>
+            <button class="slide-zoom-btn" aria-label="Ver imagem em tela cheia">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="slide" style="background-image: url('images/detalhes-img-casa-sg.jpg');" role="img" aria-label="Acabamento da marcenaria da cozinha">
+            <div class="slide-caption">Cozinha & Marcenaria</div>
+            <button class="slide-zoom-btn" aria-label="Ver imagem em tela cheia">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="slide" style="background-image: url('images/inner_projects_background_casasg-2025.jpg');" role="img" aria-label="Fachada externa da Casa no Loteamento Felicità">
+            <div class="slide-caption">Fachada do Imóvel</div>
+            <button class="slide-zoom-btn" aria-label="Ver imagem em tela cheia">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+            </button>
+          </div>
           
           <div class="slider-nav">
             <button class="slider-btn" id="prevSlide" aria-label="Foto anterior">&#8592;</button>
@@ -485,6 +523,16 @@
       </svg>
       <span class="whatsapp-badge"></span>
     </a>
+  </div>
+
+  <!-- Lightbox de Imagens -->
+  <div class="lightbox" id="imageLightbox" role="dialog" aria-modal="true" aria-label="Visualização em tela cheia" tabindex="-1">
+    <button class="lightbox-close" aria-label="Fechar tela cheia">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="Imagem ampliada">
+    </div>
+    <button class="lightbox-nav lightbox-prev" aria-label="Imagem anterior">&#8592;</button>
+    <button class="lightbox-nav lightbox-next" aria-label="Próxima imagem">&#8594;</button>
   </div>
 
   <script src="index.js" defer></script>
