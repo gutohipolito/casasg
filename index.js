@@ -440,9 +440,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // --- Trigger Mobile: timer de 35 segundos em dispositivos touch ---
+    // --- Trigger Mobile: timer de 10 segundos em dispositivos touch ---
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-      mobileTimer = setTimeout(showExitPopup, 35000);
+      mobileTimer = setTimeout(showExitPopup, 10000);
     }
 
     // --- Fechar: botão X ---
