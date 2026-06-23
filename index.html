@@ -625,6 +625,77 @@
     <button class="lightbox-nav lightbox-next" aria-label="Próxima imagem">&#8594;</button>
   </div>
 
+  <!-- Pop-up Exit Intent -->
+  <div class="exit-popup-overlay" id="exitPopup" role="dialog" aria-modal="true" aria-label="Oferta especial antes de sair" tabindex="-1">
+    <div class="exit-popup">
+      <button class="exit-popup-close" id="exitPopupClose" aria-label="Fechar pop-up">&#10005;</button>
+
+      <!-- Lado Esquerdo: Imagem da Casa -->
+      <div class="exit-popup-img">
+        <img src="images/inner_projects_background_casasg-2025.jpg" alt="Casa de Alto Padrão no Loteamento Felicità em Farroupilha" loading="lazy">
+        <div class="exit-popup-img-overlay">
+          <span class="exit-popup-badge">Loteamento Felicità</span>
+          <p class="exit-popup-img-caption">Farroupilha · RS</p>
+        </div>
+      </div>
+
+      <!-- Lado Direito: Conteúdo -->
+      <div class="exit-popup-content">
+        <p class="exit-popup-label">Antes de ir embora...</p>
+        <h2 class="exit-popup-title">Está em dúvida? Converse conosco sem compromisso</h2>
+        <p class="exit-popup-subtitle">Lembrando que estão inclusos <strong>todos esses itens</strong> na entrega das chaves:</p>
+
+        <!-- Lista padrão -->
+        <ul class="exit-popup-list">
+          <li>
+            <span class="exit-list-icon">✓</span>
+            <span>Revisão completa de elétrica e hidráulica com todas manutenções necessárias e relatório completo</span>
+          </li>
+          <li>
+            <span class="exit-list-icon">✓</span>
+            <span>Revisão de todos os móveis e manutenções necessárias</span>
+          </li>
+          <li>
+            <span class="exit-list-icon">✓</span>
+            <span>Limpeza profunda de todos os cômodos e eletrodomésticos</span>
+          </li>
+          <li>
+            <span class="exit-list-icon">✓</span>
+            <span>Manutenção dos jardins externos</span>
+          </li>
+        </ul>
+
+        <!-- Lista em destaque -->
+        <ul class="exit-popup-list exit-popup-list--highlight">
+          <li>
+            <span class="exit-list-icon exit-list-icon--gold">★</span>
+            <span>
+              <strong>Projeto do terceiro quarto personalizado totalmente da maneira que escolher:</strong>
+              <em>Você poderá fazer um quarto sob medida, escolhendo tudo do seu jeito incluso no valor da casa</em>
+            </span>
+          </li>
+          <li>
+            <span class="exit-list-icon exit-list-icon--gold">★</span>
+            <span>
+              <strong>Personalizar os Rodapés da casa:</strong>
+              <em>Você irá escolher o tipo e as cores de cada cômodo também já incluso no valor da casa</em>
+            </span>
+          </li>
+        </ul>
+
+        <!-- CTA WhatsApp -->
+        <a href="https://wa.me/5554996885322?text=Ol%C3%A1%2C+quero+saber+mais+sobre+os+itens+inclusos+na+entrega+das+chaves!" class="btn btn-whatsapp exit-popup-cta" target="_blank" rel="noopener noreferrer" aria-label="Conversar no WhatsApp sobre os itens inclusos">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.335 4.963L2 22l5.233-1.371a9.943 9.943 0 0 0 4.775 1.216h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.037-5.176-2.922-7.062A9.92 9.92 0 0 0 12.012 2zm5.835 14.165c-.272.766-1.379 1.4-1.886 1.492-.455.082-.937.126-2.883-.64-2.493-.979-4.103-3.52-4.228-3.687-.125-.166-1.02-1.357-1.02-2.588 0-1.23.646-1.838.875-2.09.23-.25.5-.313.667-.313.167 0 .334.002.48.01.147.007.354-.057.552.423.2.49.688 1.68.75 1.805.063.125.104.271.02.438-.083.167-.125.27-.25.417-.125.146-.263.327-.375.439-.125.125-.256.26-.11.51.146.25.648 1.071 1.39 1.733.957.854 1.76 1.118 2.01 1.243.25.125.396.104.542-.063.146-.167.625-.73 1.002-1.002.104-.083.208-.062.333-.02l2.042.96c.125.063.208.104.25.167.042.062.042.354-.083.72z"/>
+          </svg>
+          Conversar no WhatsApp
+        </a>
+
+        <p class="exit-popup-note">Sem compromisso · Resposta em minutos</p>
+      </div>
+    </div>
+  </div>
+
   <script src="index.js" defer></script>
 </body>
 </html>

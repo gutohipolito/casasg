@@ -401,4 +401,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ==========================================================================
+  // 6. Exit Intent Pop-up
+  // ==========================================================================
+  const exitPopup = document.getElementById('exitPopup');
+  const exitPopupClose = document.getElementById('exitPopupClose');
+
+  if (exitPopup && exitPopupClose) {
+    const STORAGE_KEY = 'casasg_exit_popup_shown';
+    let popupShown = false;
+    let mobileTimer = null;
+
+    // Exibir o pop-up (apenas 1x por sessão)
+    const showExitPopup = () => {
+      if (popupShown || sessionStorage.getItem(STORAGE_KEY)) return;
+      popupShown = true;
+      sessionStorage.setItem(STORAGE_KEY, '1');
+      exitPopup.classList.add('active');
+      exitPopup.focus();
+      document.body.style.overflow = 'hidden';
+    };
+
+    // Fechar o pop-up
+    const closeExitPopup = () => {
+      exitPopup.classList.remove('active');
+      document.body.style.overflow = '';
+      if (mobileTimer) clearTimeout(mobileTimer);
+    };
+
+    // --- Trigger Desktop: mouse saindo pelo topo da janela ---
+    // Aguarda 5s antes de ativar o listener para não irritar o usuário ao entrar
+    let exitIntentReady = false;
+    setTimeout(() => { exitIntentReady = true; }, 5000);
+
+    document.addEventListener('mouseleave', (e) => {
+      if (exitIntentReady && e.clientY < 10) {
+        showExitPopup();
+      }
+    });
+
+    // --- Trigger Mobile: timer de 35 segundos em dispositivos touch ---
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      mobileTimer = setTimeout(showExitPopup, 35000);
+    }
+
+    // --- Fechar: botão X ---
+    exitPopupClose.addEventListener('click', closeExitPopup);
+
+    // --- Fechar: clicar no overlay (fora do card) ---
+    exitPopup.addEventListener('click', (e) => {
+      if (e.target === exitPopup) closeExitPopup();
+    });
+
+    // --- Fechar: tecla Escape (apenas quando o lightbox não está ativo) ---
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && exitPopup.classList.contains('active')) {
+        closeExitPopup();
+      }
+    });
+  }
+
 });
+
