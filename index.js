@@ -461,5 +461,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ==========================================================================
+  // 7. Correção de Links Locais para o protocolo file:// (Duplo clique offline)
+  // ==========================================================================
+  if (window.location.protocol === 'file:') {
+    const localLinks = document.querySelectorAll('a[href]');
+    localLinks.forEach(link => {
+      let href = link.getAttribute('href');
+      // Evita links externos, âncoras, links do whatsapp e a raiz
+      if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto') && !href.startsWith('tel') && href !== '/' && href !== './') {
+        // Se o link não termina com .html, adiciona
+        if (!href.endsWith('.html')) {
+          // Remove a barra inicial se houver
+          if (href.startsWith('/')) {
+            href = href.substring(1);
+          }
+          link.setAttribute('href', href + '.html');
+        }
+      } else if (href === '/') {
+        link.setAttribute('href', 'index.html');
+      }
+    });
+  }
+
 });
 
