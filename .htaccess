@@ -1,0 +1,27 @@
+# ============================================================
+# Casa SG — Configuração Apache (.htaccess)
+# ============================================================
+
+Options -Indexes
+RewriteEngine On
+
+# ------------------------------------------------------------
+# 1. Redirecionar URLs com .html para a versão sem extensão
+#    (evita conteúdo duplicado no Google)
+# ------------------------------------------------------------
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/(.+)\.html[\s?] [NC]
+RewriteRule ^(.+)\.html$ /$1 [R=301,L]
+
+# ------------------------------------------------------------
+# 2. Servir o arquivo .html correspondente para URL limpa
+#    (ex: /faq → faq.html)
+# ------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+# ------------------------------------------------------------
+# 3. Página de erro 404
+# ------------------------------------------------------------
+ErrorDocument 404 /index.html
