@@ -491,19 +491,50 @@ document.addEventListener('DOMContentLoaded', () => {
       const proposalAside = document.createElement('aside');
       proposalAside.className = 'proposal-float';
       proposalAside.setAttribute('aria-label', 'Enviar proposta de compra');
+      proposalAside.hidden = true;
       proposalAside.innerHTML = `
-        <button type="button" class="proposal-float-btn" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal">
-          <span class="proposal-float-icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-            </svg>
-          </span>
-          <span class="proposal-float-label">Fazer oferta?</span>
-        </button>`;
+        <div class="proposal-chat" id="proposalChat">
+          <button type="button" class="proposal-chat-dismiss" id="proposalChatDismiss" aria-label="Dispensar">&#10005;</button>
+          <button type="button" class="proposal-chat-bubble" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal">
+            <span class="proposal-chat-avatar" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </span>
+            <span class="proposal-chat-copy">
+              <span class="proposal-chat-eyebrow">Casa no Felicità</span>
+              <span class="proposal-chat-text">Fazer oferta?</span>
+            </span>
+          </button>
+        </div>`;
       document.querySelector('.site-float-stack').prepend(proposalAside);
+
+      const chatDismiss = document.getElementById('proposalChatDismiss');
+      const DISMISS_KEY = 'casasg_proposal_chat_dismissed';
+      let revealed = false;
+
+      const getRevealThreshold = () => Math.max(280, Math.round(window.innerHeight * 0.5));
+
+      const onScrollReveal = () => {
+        if (revealed || sessionStorage.getItem(DISMISS_KEY) === '1') return;
+        if (window.scrollY < getRevealThreshold()) return;
+        revealed = true;
+        proposalAside.hidden = false;
+        requestAnimationFrame(() => proposalAside.classList.add('is-visible'));
+        window.removeEventListener('scroll', onScrollReveal);
+      };
+
+      chatDismiss.addEventListener('click', (e) => {
+        e.stopPropagation();
+        proposalAside.classList.remove('is-visible');
+        sessionStorage.setItem(DISMISS_KEY, '1');
+        setTimeout(() => { proposalAside.hidden = true; }, 280);
+      });
+
+      if (sessionStorage.getItem(DISMISS_KEY) !== '1') {
+        window.addEventListener('scroll', onScrollReveal, { passive: true });
+        onScrollReveal();
+      }
     }
 
     if (document.getElementById('proposalModal')) return;
@@ -536,12 +567,12 @@ document.addEventListener('DOMContentLoaded', () => {
                   <input type="text" id="proposalName" name="nome" required autocomplete="name">
                 </div>
                 <div class="proposal-field">
-                  <label for="proposalEmail">E-mail *</label>
-                  <input type="email" id="proposalEmail" name="email" required autocomplete="email">
-                </div>
-                <div class="proposal-field">
                   <label for="proposalPhone">WhatsApp / telefone *</label>
                   <input type="tel" id="proposalPhone" name="telefone" required autocomplete="tel" placeholder="(54) 99999-9999">
+                </div>
+                <div class="proposal-field">
+                  <label for="proposalEmail">E-mail <span class="proposal-optional">(opcional)</span></label>
+                  <input type="email" id="proposalEmail" name="email" autocomplete="email" placeholder="seuhome@email.com">
                 </div>
               </div>
 
@@ -585,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="proposal-success">
                   <div class="proposal-success-icon" aria-hidden="true">&#10003;</div>
                   <p class="proposal-panel-title">Proposta enviada!</p>
-                  <p>Recebemos sua oferta. Entraremos em contato em breve pelo e-mail ou WhatsApp informado.</p>
+                  <p>Recebemos sua oferta. Entraremos em contato em breve pelo WhatsApp ou e-mail informado.</p>
                 </div>
               </div>
 
@@ -605,7 +636,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const openBtn = document.getElementById('proposalFloatBtn');
     const closeBtn = document.getElementById('proposalModalClose');
     const form = document.getElementById('proposalForm');
-    const panels = Array.from(form.querySelectorAll('.proposal-panel[data-step]'));
+    const panels = Array.from(form.querySelectorAll('.proposal-panel[data-step="0"], .proposal-panel[data-step="1"], .proposal-panel[data-step="2"]'));
+    const successPanel = form.querySelector('.proposal-panel[data-step="success"]');
     const dots = Array.from(document.querySelectorAll('[data-step-dot]'));
     const prevBtn = document.getElementById('proposalPrev');
     const nextBtn = document.getElementById('proposalNext');
@@ -626,6 +658,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return num.toLocaleString('pt-BR');
     };
 
+    const setBtnVisible = (btn, visible) => {
+      btn.hidden = !visible;
+      btn.setAttribute('aria-hidden', visible ? 'false' : 'true');
+      if (!visible) btn.tabIndex = -1;
+      else btn.removeAttribute('tabindex');
+    };
+
     const openModal = () => {
       lastFocus = document.activeElement;
       currentStep = 0;
@@ -633,6 +672,9 @@ document.addEventListener('DOMContentLoaded', () => {
       permutaField.hidden = true;
       errorEl.classList.remove('is-visible');
       errorEl.textContent = '';
+      actions.hidden = false;
+      successPanel.hidden = true;
+      successPanel.classList.remove('is-active');
       panels.forEach((p) => p.classList.remove('is-active'));
       panels[0].classList.add('is-active');
       updateControls();
@@ -649,13 +691,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const updateControls = () => {
+      const isLast = currentStep === 2;
       dots.forEach((dot, i) => {
         dot.classList.toggle('is-active', i === currentStep);
         dot.classList.toggle('is-done', i < currentStep);
       });
-      prevBtn.hidden = currentStep === 0;
-      nextBtn.hidden = currentStep === 2;
-      submitBtn.hidden = currentStep !== 2;
+      setBtnVisible(prevBtn, currentStep > 0);
+      setBtnVisible(nextBtn, !isLast);
+      setBtnVisible(submitBtn, isLast);
+      actions.classList.toggle('is-last-step', isLast);
     };
 
     const showError = (msg) => {
@@ -670,8 +714,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = document.getElementById('proposalEmail');
         const phone = document.getElementById('proposalPhone');
         if (!name.value.trim()) return showError('Informe seu nome.'), false;
-        if (!email.checkValidity()) return showError('Informe um e-mail válido.'), false;
         if (!phone.value.trim()) return showError('Informe telefone ou WhatsApp.'), false;
+        if (email.value.trim() && !email.checkValidity()) {
+          return showError('Se informar e-mail, use um endereço válido.'), false;
+        }
       }
       if (step === 1) {
         const value = document.getElementById('proposalValue');
@@ -693,15 +739,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const value = document.getElementById('proposalValue').value.trim();
       const payment = document.getElementById('proposalPayment').value;
       const permuta = document.getElementById('proposalPermuta').value.trim();
+      const contactLine = email ? `${phone} · ${email}` : phone;
       summaryEl.innerHTML = `
         <strong>${name}</strong><br>
-        ${email} · ${phone}<br><br>
+        ${contactLine}<br><br>
         <strong>Oferta:</strong> R$ ${value}<br>
         <strong>Pagamento:</strong> ${payment}${permuta ? `<br><strong>Permuta:</strong> ${permuta}` : ''}`;
     };
 
     const goToStep = (step) => {
       panels.forEach((p) => p.classList.remove('is-active'));
+      successPanel.classList.remove('is-active');
+      successPanel.hidden = true;
       panels[step].classList.add('is-active');
       currentStep = step;
       updateControls();
@@ -738,6 +787,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (currentStep !== 2) return;
       if (!validateStep(2)) return;
 
       if (!PROPOSAL_FORM_ENDPOINT) {
@@ -750,24 +800,30 @@ document.addEventListener('DOMContentLoaded', () => {
       errorEl.classList.remove('is-visible');
 
       try {
+        const data = Object.fromEntries(new FormData(form));
+        if (!String(data.email || '').trim()) delete data.email;
+
         const response = await fetch(PROPOSAL_FORM_ENDPOINT, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+          body: JSON.stringify(data),
         });
 
         if (!response.ok) {
-          const data = await response.json().catch(() => ({}));
-          throw new Error(data.error || 'Não foi possível enviar. Tente novamente.');
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error || 'Não foi possível enviar. Tente novamente.');
         }
 
         panels.forEach((p) => p.classList.remove('is-active'));
-        form.querySelector('[data-step="success"]').classList.add('is-active');
-        form.querySelector('[data-step="success"]').hidden = false;
+        successPanel.hidden = false;
+        successPanel.classList.add('is-active');
         actions.hidden = true;
+        setBtnVisible(nextBtn, false);
+        setBtnVisible(submitBtn, false);
+        setBtnVisible(prevBtn, false);
         dots.forEach((d) => d.classList.add('is-done'));
       } catch (err) {
         showError(err.message || 'Erro ao enviar. Tente pelo WhatsApp.');
