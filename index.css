@@ -1751,6 +1751,40 @@ img {
   line-height: 1.4;
 }
 
+.tech-intro-section {
+  position: relative;
+  background-image:
+    linear-gradient(105deg, rgba(10, 12, 10, 0.96) 0%, rgba(10, 12, 10, 0.9) 42%, rgba(10, 12, 10, 0.78) 100%),
+    url('images/internas/escritorio.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.tech-intro-section .cluster-card-detalhe {
+  background-color: rgba(18, 22, 19, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.tech-intro-caption {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  font-style: italic;
+}
+
+@media (min-width: 992px) {
+  .tech-intro-section {
+    background-position: 72% center;
+  }
+}
+
 /* ==========================================================================
    Footer & Assinatura de Autoria
    ========================================================================== */
@@ -2329,6 +2363,36 @@ img {
 .localizacao-content h2::after {
   margin-left: auto;
   margin-right: auto;
+}
+
+@media (min-width: 992px) {
+  .imobiliarias-section > .container {
+    text-align: center;
+  }
+
+  .imobiliarias-section h2 {
+    display: inline-block;
+  }
+
+  .imobiliarias-section h2::after {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .imobiliarias-lead {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .imobiliarias-list {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .imobiliarias-direct {
+    text-align: center;
+  }
 }
 
 .diferenciais-grid {
