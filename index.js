@@ -494,31 +494,48 @@ document.addEventListener('DOMContentLoaded', () => {
       proposalAside.hidden = true;
       proposalAside.innerHTML = `
         <div class="proposal-chat" id="proposalChat">
-          <button type="button" class="proposal-chat-dismiss" id="proposalChatDismiss" aria-label="Dispensar">&#10005;</button>
-          <button type="button" class="proposal-chat-bubble" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal">
-            <span class="proposal-chat-avatar" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-            </span>
-            <span class="proposal-chat-copy">
-              <span class="proposal-chat-eyebrow">Casa no Felicità</span>
-              <span class="proposal-chat-text">Fazer oferta?</span>
-            </span>
+          <div class="proposal-chat-panel" id="proposalChatPanel">
+            <button type="button" class="proposal-chat-dismiss" id="proposalChatDismiss" aria-label="Minimizar">&#10005;</button>
+            <button type="button" class="proposal-chat-bubble" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal">
+              <span class="proposal-chat-copy">
+                <span class="proposal-chat-eyebrow">Casa no Felicità</span>
+                <span class="proposal-chat-text">Fazer oferta?</span>
+              </span>
+            </button>
+          </div>
+          <button type="button" class="proposal-chat-launcher" id="proposalChatLauncher" aria-label="Abrir oferta" aria-expanded="true" aria-controls="proposalChatPanel">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <line x1="10" y1="9" x2="8" y2="9"/>
+            </svg>
           </button>
         </div>`;
       document.querySelector('.site-float-stack').prepend(proposalAside);
 
+      const chatRoot = document.getElementById('proposalChat');
       const chatDismiss = document.getElementById('proposalChatDismiss');
-      const DISMISS_KEY = 'casasg_proposal_chat_dismissed';
+      const chatLauncher = document.getElementById('proposalChatLauncher');
+      const COLLAPSE_KEY = 'casasg_proposal_chat_collapsed';
       let revealed = false;
+
+      const setCollapsed = (collapsed) => {
+        chatRoot.classList.toggle('is-collapsed', collapsed);
+        chatLauncher.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        chatLauncher.setAttribute('aria-label', collapsed ? 'Abrir oferta' : 'Enviar proposta');
+        if (collapsed) sessionStorage.setItem(COLLAPSE_KEY, '1');
+        else sessionStorage.removeItem(COLLAPSE_KEY);
+      };
 
       const getRevealThreshold = () => Math.max(280, Math.round(window.innerHeight * 0.5));
 
       const onScrollReveal = () => {
-        if (revealed || sessionStorage.getItem(DISMISS_KEY) === '1') return;
+        if (revealed) return;
         if (window.scrollY < getRevealThreshold()) return;
         revealed = true;
+        if (sessionStorage.getItem(COLLAPSE_KEY) === '1') setCollapsed(true);
         proposalAside.hidden = false;
         requestAnimationFrame(() => proposalAside.classList.add('is-visible'));
         window.removeEventListener('scroll', onScrollReveal);
@@ -526,15 +543,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       chatDismiss.addEventListener('click', (e) => {
         e.stopPropagation();
-        proposalAside.classList.remove('is-visible');
-        sessionStorage.setItem(DISMISS_KEY, '1');
-        setTimeout(() => { proposalAside.hidden = true; }, 280);
+        setCollapsed(true);
       });
 
-      if (sessionStorage.getItem(DISMISS_KEY) !== '1') {
-        window.addEventListener('scroll', onScrollReveal, { passive: true });
-        onScrollReveal();
-      }
+      chatLauncher.addEventListener('click', () => {
+        if (chatRoot.classList.contains('is-collapsed')) {
+          setCollapsed(false);
+          return;
+        }
+        document.getElementById('proposalFloatBtn')?.click();
+      });
+
+      window.addEventListener('scroll', onScrollReveal, { passive: true });
+      onScrollReveal();
     }
 
     if (document.getElementById('proposalModal')) return;
