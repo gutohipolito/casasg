@@ -2314,10 +2314,9 @@ img {
 .docs-projeto-section > .container,
 .comparacao-section > .container,
 .tabs-section > .container,
-.imobiliarias-section > .container,
 .section-padding > .container.cluster-grid,
 .section-padding > .container.map-layout-vertical,
-.section-padding > .container:not(.cluster-grid):not(.map-layout-vertical):not(.estrutura-container):not(.faq-layout-grid) {
+.section-padding:not(.imobiliarias-section) > .container:not(.cluster-grid):not(.map-layout-vertical):not(.estrutura-container):not(.faq-layout-grid) {
   text-align: left;
 }
 
@@ -2366,12 +2365,14 @@ img {
 }
 
 @media (min-width: 992px) {
-  .imobiliarias-section > .container {
+  .section-padding.imobiliarias-section > .container {
     text-align: center;
   }
 
   .imobiliarias-section h2 {
-    display: inline-block;
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 
   .imobiliarias-section h2::after {
