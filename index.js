@@ -480,7 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // 6b. Galeria completa — showcase GSAP (drag + snap + destaque)
+  // 6b. Galeria completa — showcase GSAP (scroll scrub + drag + snap)
   // ==========================================================================
   (function initGaleriaShowcase() {
     const root = document.getElementById('galeriaShowcase');
@@ -508,6 +508,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeIndex = 0;
     let didDrag = false;
+    let userTookControl = false;
+    let draggable = null;
+    let scrubTrigger = null;
+
+    const isCompact = () => window.matchMedia('(max-width: 700px)').matches;
+    const scrubSlideCount = () => Math.min(isCompact() ? 3 : 4, Math.max(slides.length - 1, 0));
 
     const getOffsetForIndex = (index) => {
       const slide = slides[index];
@@ -526,13 +532,28 @@ document.addEventListener('DOMContentLoaded', () => {
       if (counter) counter.textContent = `${activeIndex + 1} / ${slides.length}`;
     };
 
+    const setTrackX = (x) => {
+      gsap.set(track, { x });
+      if (draggable) draggable.update();
+    };
+
+    const applyScrubProgress = (progress) => {
+      const max = scrubSlideCount();
+      const exact = Math.max(0, Math.min(progress, 1)) * max;
+      const a = Math.floor(exact);
+      const b = Math.min(a + 1, max);
+      const t = exact - a;
+      const x = getOffsetForIndex(a) + (getOffsetForIndex(b) - getOffsetForIndex(a)) * t;
+      setTrackX(x);
+      updateActive(Math.round(exact));
+    };
+
     const goTo = (index, animate = true) => {
       const next = Math.max(0, Math.min(index, slides.length - 1));
       updateActive(next);
       const x = getOffsetForIndex(next);
       if (!animate || reduceMotion) {
-        gsap.set(track, { x });
-        if (draggable) draggable.update();
+        setTrackX(x);
         return;
       }
       gsap.to(track, {
@@ -557,7 +578,20 @@ document.addEventListener('DOMContentLoaded', () => {
       return best;
     };
 
-    let draggable = null;
+    const killScrub = () => {
+      if (!scrubTrigger) return;
+      scrubTrigger.kill();
+      scrubTrigger = null;
+      root.classList.remove('is-scrubbing');
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    };
+
+    const takeControl = () => {
+      if (userTookControl) return;
+      userTookControl = true;
+      root.classList.add('is-manual');
+      killScrub();
+    };
 
     const setupDraggable = () => {
       if (draggable) {
@@ -578,6 +612,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         onPress() {
           didDrag = false;
+          takeControl();
           viewport.classList.add('is-dragging');
           gsap.killTweensOf(track);
         },
@@ -600,17 +635,56 @@ document.addEventListener('DOMContentLoaded', () => {
       })[0];
     };
 
+    const setupScrollScrub = () => {
+      killScrub();
+      if (reduceMotion || userTookControl || typeof ScrollTrigger === 'undefined') return;
+      if (scrubSlideCount() < 1) return;
+
+      const compact = isCompact();
+      root.classList.add('is-scrubbing');
+
+      scrubTrigger = ScrollTrigger.create({
+        trigger: root,
+        start: 'top 58%',
+        end: compact ? 'bottom 40%' : '+=460',
+        pin: !compact,
+        pinSpacing: true,
+        anticipatePin: compact ? 0 : 1,
+        scrub: compact ? 0.9 : 0.7,
+        invalidateOnRefresh: true,
+        onUpdate(self) {
+          if (userTookControl) return;
+          applyScrubProgress(self.progress);
+        },
+        onEnter() {
+          root.classList.add('is-in-view');
+        },
+        onLeave() {
+          root.classList.remove('is-in-view');
+        },
+        onLeaveBack() {
+          root.classList.remove('is-in-view');
+        },
+      });
+    };
+
     updateActive(0);
     gsap.set(track, { x: getOffsetForIndex(0) });
     setupDraggable();
+    setupScrollScrub();
 
-    prevBtn?.addEventListener('click', () => goTo(activeIndex - 1));
-    nextBtn?.addEventListener('click', () => goTo(activeIndex + 1));
+    const manualGoTo = (index) => {
+      takeControl();
+      goTo(index);
+    };
+
+    prevBtn?.addEventListener('click', () => manualGoTo(activeIndex - 1));
+    nextBtn?.addEventListener('click', () => manualGoTo(activeIndex + 1));
 
     slides.forEach((slide, i) => {
       slide.addEventListener('click', () => {
         if (slide.dataset.dragged === '1') return;
-        if (!slide.classList.contains('is-active')) goTo(i);
+        if (!slide.classList.contains('is-active')) manualGoTo(i);
       });
     });
 
@@ -618,10 +692,10 @@ document.addEventListener('DOMContentLoaded', () => {
     viewport.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        goTo(activeIndex - 1);
+        manualGoTo(activeIndex - 1);
       } else if (e.key === 'ArrowRight') {
         e.preventDefault();
-        goTo(activeIndex + 1);
+        manualGoTo(activeIndex + 1);
       }
     });
 
@@ -630,8 +704,14 @@ document.addEventListener('DOMContentLoaded', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         setupDraggable();
-        goTo(activeIndex, false);
-      }, 150);
+        if (userTookControl) {
+          goTo(activeIndex, false);
+        } else {
+          setupScrollScrub();
+          if (scrubTrigger) applyScrubProgress(scrubTrigger.progress);
+          else goTo(activeIndex, false);
+        }
+      }, 160);
     });
 
     if (!reduceMotion && typeof ScrollTrigger !== 'undefined') {
@@ -643,7 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearProps: 'opacity,transform',
         scrollTrigger: {
           trigger: root,
-          start: 'top 78%',
+          start: 'top 82%',
           once: true,
         },
       });

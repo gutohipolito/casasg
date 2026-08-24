@@ -1466,6 +1466,14 @@ img {
   letter-spacing: 0.04em;
 }
 
+.galeria-showcase.is-scrubbing.is-in-view .galeria-showcase-hint {
+  color: var(--color-gold);
+}
+
+.galeria-showcase.is-manual .galeria-showcase-hint {
+  color: var(--text-muted);
+}
+
 @media (max-width: 700px) {
   .galeria-showcase-track {
     padding: 0 max(1rem, calc((100vw - min(84vw, 22rem)) / 2));
