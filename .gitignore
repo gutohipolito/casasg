@@ -1,0 +1,15 @@
+# Deploy / backup local
+*.zip
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor / IDE
+.cursor/
+.vscode/
+*.swp
+*~
+
+# Logs
+*.log

@@ -1,5 +1,6 @@
 # ============================================================
 # Casa SG — Configuração Apache (.htaccess)
+# Espelha políticas de cache/segurança usadas no Cloudflare
 # ============================================================
 
 Options -Indexes
@@ -7,14 +8,12 @@ RewriteEngine On
 
 # ------------------------------------------------------------
 # 1. Redirecionar URLs com .html para a versão sem extensão
-#    (evita conteúdo duplicado no Google)
 # ------------------------------------------------------------
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/(.+)\.html[\s?] [NC]
 RewriteRule ^(.+)\.html$ /$1 [R=301,L]
 
 # ------------------------------------------------------------
 # 2. Servir o arquivo .html correspondente para URL limpa
-#    (ex: /faq → faq.html)
 # ------------------------------------------------------------
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -25,3 +24,54 @@ RewriteRule ^(.+?)/?$ $1.html [L]
 # 3. Página de erro 404
 # ------------------------------------------------------------
 ErrorDocument 404 /index.html
+
+# ------------------------------------------------------------
+# 4. Segurança (compatível com Cloudflare / WAFs)
+# ------------------------------------------------------------
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # Descoberta para IA
+  Header set Link "</llms.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms\", </llms-full.txt>; rel=\"alternate\"; type=\"text/plain\"; title=\"llms-full\""
+</IfModule>
+
+# ------------------------------------------------------------
+# 5. Tipos MIME e cache — llms / sitemap / assets
+# ------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType text/plain .txt
+  AddCharset UTF-8 .txt .html .css .js .xml
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "^(llms|llms-full)\.txt$">
+    Header set Access-Control-Allow-Origin "*"
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+    Header set Content-Type "text/plain; charset=utf-8"
+  </FilesMatch>
+
+  <FilesMatch "^sitemap\.xml$">
+    Header set Access-Control-Allow-Origin "*"
+    Header set Cache-Control "public, max-age=7200, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "^robots\.txt$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "\.(css|js)$">
+    Header set Cache-Control "public, max-age=604800, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|pdf)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# Compressão (Core Web Vitals)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json application/xml image/svg+xml
+</IfModule>

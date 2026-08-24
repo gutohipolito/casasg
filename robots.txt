@@ -1,20 +1,102 @@
+# Casa SG — robots.txt
+# Site estático SSG; dados para IA em /llms.txt e /llms-full.txt
+# WAF/Cloudflare: não bloquear os User-Agents listados abaixo (são crawlers legítimos).
+
 User-agent: *
 Allow: /
 Disallow: /_headers
+Disallow: /*.zip$
 
-# Permissões específicas para bots de IA que consomem dados estruturados
+# --- Bots de IA / Answer Engines (acesso explícito) ---
 User-agent: GPTBot
 Allow: /
 Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: ClaudeBot
 Allow: /
 Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Claude-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: Google-Extended
 Allow: /
 Allow: /llms.txt
+Allow: /llms-full.txt
 
-# Caminhos do Sitemap e do arquivo especial de IA
+User-agent: GoogleOther
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Bytespider
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Amazonbot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: meta-externalagent
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: FacebookBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: CCBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: cohere-ai
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Diffbot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: YouBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
 Sitemap: https://casasg.com/sitemap.xml
-Link: <https://casasg.com/llms.txt>; rel="alternate"; type="text/plain"; title="Dados estruturados para IA"
+# Índice IA: https://casasg.com/llms.txt | Memorial: https://casasg.com/llms-full.txt

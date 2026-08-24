@@ -11,19 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const openMenu = () => {
       toggleBtn.setAttribute('aria-expanded', 'true');
+      toggleBtn.setAttribute('aria-label', 'Fechar menu de navegação');
       navMenu.classList.add('active');
-      navMenu.style.display = 'flex';
-      navMenu.style.flexDirection = 'column';
-      navMenu.style.position = 'absolute';
-      navMenu.style.top = '100%';
-      navMenu.style.left = '0';
-      navMenu.style.width = '100%';
-      navMenu.style.backgroundColor = 'var(--bg-glass)';
-      navMenu.style.backdropFilter = 'blur(10px)';
-      navMenu.style.padding = '2rem';
-      navMenu.style.borderBottom = '1px solid var(--border-glass)';
-      
-      // Focar no primeiro link do menu ao abrir para acessibilidade
       if (navLinks.length > 0) {
         navLinks[0].focus();
       }
@@ -31,21 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeMenu = () => {
       toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.setAttribute('aria-label', 'Abrir menu de navegação');
       navMenu.classList.remove('active');
-      
-      // Limpa estilos inline para evitar interferência em layouts desktop responsivos
-      navMenu.style.display = '';
-      navMenu.style.flexDirection = '';
-      navMenu.style.position = '';
-      navMenu.style.top = '';
-      navMenu.style.left = '';
-      navMenu.style.width = '';
-      navMenu.style.backgroundColor = '';
-      navMenu.style.backdropFilter = '';
-      navMenu.style.padding = '';
-      navMenu.style.borderBottom = '';
-      
-      // Restaura o foco para o botão que ativou o menu
       toggleBtn.focus();
     };
 
@@ -111,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       currentSlide = (index + slides.length) % slides.length;
       slides[currentSlide].classList.add('active');
+      const counter = document.getElementById('sliderCounter');
+      if (counter) {
+        counter.textContent = `${currentSlide + 1} / ${slides.length}`;
+      }
     };
 
     if (prevBtn) {
@@ -300,16 +280,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextLightboxBtn = document.querySelector('.lightbox-next');
   const zoomBtns = document.querySelectorAll('.slide-zoom-btn');
   
-  // Mapeamento dos caminhos das imagens
-  const sliderImages = [
-    'images/interno-casasg-1.jpg',
-    'images/detalhes-img-casa-sg.jpg',
-    'images/inner_projects_background_casasg-2025.jpg'
-  ];
+  // Preferir src das imagens da galeria (grid + slides); fallback para lista estática
+  const galleryNodes = Array.from(document.querySelectorAll('[data-gallery-src], .slide img, .galeria-item img'));
+  const sliderImages = [];
+  const seen = new Set();
+  galleryNodes.forEach((el) => {
+    const src = el.getAttribute('data-gallery-src') || el.getAttribute('src');
+    if (src && !seen.has(src)) {
+      seen.add(src);
+      sliderImages.push(src);
+    }
+  });
+  if (sliderImages.length === 0) {
+    sliderImages.push(
+      'images/interno-casasg-1.jpg',
+      'images/detalhes-img-casa-sg.jpg',
+      'images/inner_projects_background_casasg-2025.jpg'
+    );
+  }
   let activeLightboxIndex = 0;
   let lastActiveElement = null;
 
-  if (lightbox && lightboxImg && zoomBtns.length > 0) {
+  if (lightbox && lightboxImg && (zoomBtns.length > 0 || document.querySelector('.galeria-item'))) {
     
     const openLightbox = (index) => {
       lastActiveElement = document.activeElement;
@@ -338,11 +330,27 @@ document.addEventListener('DOMContentLoaded', () => {
       lightboxImg.src = sliderImages[activeLightboxIndex];
     };
 
-    // Abre o lightbox ao clicar no botão zoom
-    zoomBtns.forEach((btn, index) => {
+    const openFromSrc = (src) => {
+      const index = sliderImages.indexOf(src);
+      openLightbox(index >= 0 ? index : 0);
+    };
+
+    // Abre o lightbox ao clicar no botão zoom do slider
+    zoomBtns.forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        openLightbox(index);
+        const img = btn.closest('.slide')?.querySelector('img');
+        const src = img?.getAttribute('data-gallery-src') || img?.getAttribute('src');
+        if (src) openFromSrc(src);
+      });
+    });
+
+    // Galeria em grade
+    document.querySelectorAll('.galeria-item').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const img = btn.querySelector('img');
+        const src = img?.getAttribute('data-gallery-src') || img?.getAttribute('src');
+        if (src) openFromSrc(src);
       });
     });
 

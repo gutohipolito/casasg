@@ -1,26 +1,91 @@
-# Cabeçalhos de Segurança e Cache Globais
+# Cabeçalhos de Segurança, Cache e descoberta para IA
+# Compatível com Cloudflare Pages / Workers Sites (_headers)
+# Evita headers agressivos que quebram o WAF ou o painel CF.
+
 /*
   X-Frame-Options: SAMEORIGIN
   X-Content-Type-Options: nosniff
-  X-XSS-Protection: 1; mode=block
-  Referrer-Policy: no-referrer-when-downgrade
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
   Content-Security-Policy: default-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; frame-src https://www.youtube.com/ https://www.youtube-nocookie.com/ https://maps.google.com/ https://www.google.com/maps/;
   Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: public, max-age=1800
+  Cloudflare-CDN-Cache-Control: max-age=1800
+  Link: </llms.txt>; rel="alternate"; type="text/plain"; title="llms", </llms-full.txt>; rel="alternate"; type="text/plain"; title="llms-full"
 
-# Cache e Acesso Especial para o Arquivo llms.txt consumido por IAs
+# Páginas HTML estáticas (SSG) — cache curto na edge, revalidação no browser
+/
+  Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: public, max-age=1800
+  Cloudflare-CDN-Cache-Control: max-age=1800
+
+/faq
+  Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: public, max-age=1800
+  Cloudflare-CDN-Cache-Control: max-age=1800
+
+/imobiliarias
+  Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: public, max-age=1800
+  Cloudflare-CDN-Cache-Control: max-age=1800
+
+/localizacao-felicita-farroupilha
+  Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: public, max-age=1800
+  Cloudflare-CDN-Cache-Control: max-age=1800
+
+/detalhes-marcenaria
+  Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: public, max-age=1800
+  Cloudflare-CDN-Cache-Control: max-age=1800
+
+/automacao-seguranca
+  Cache-Control: public, max-age=0, must-revalidate
+  CDN-Cache-Control: public, max-age=1800
+  Cloudflare-CDN-Cache-Control: max-age=1800
+
+# Arquivos llms — CORS aberto + TTL longo (consumo por agentes)
 /llms.txt
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600, must-revalidate
-  # Instrução para Edge Cache TTL do Cloudflare (Padrão: 1 dia na Edge)
+  CDN-Cache-Control: public, max-age=86400
   Cloudflare-CDN-Cache-Control: max-age=86400
+  Content-Type: text/plain; charset=utf-8
+  X-Robots-Tag: all
 
-# Cache e Acesso Especial para o Sitemap
+/llms-full.txt
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600, must-revalidate
+  CDN-Cache-Control: public, max-age=86400
+  Cloudflare-CDN-Cache-Control: max-age=86400
+  Content-Type: text/plain; charset=utf-8
+  X-Robots-Tag: all
+
 /sitemap.xml
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=7200, must-revalidate
+  CDN-Cache-Control: public, max-age=86400
   Cloudflare-CDN-Cache-Control: max-age=86400
+  Content-Type: application/xml; charset=utf-8
 
-# Cache de Longo Prazo para Imagens locais (1 ano na Edge)
+/robots.txt
+  Cache-Control: public, max-age=3600, must-revalidate
+  CDN-Cache-Control: public, max-age=86400
+  Cloudflare-CDN-Cache-Control: max-age=86400
+  Content-Type: text/plain; charset=utf-8
+
+# Assets — imutáveis na edge
 /images/*
   Cache-Control: public, max-age=31536000, immutable
+  CDN-Cache-Control: public, max-age=31536000
   Cloudflare-CDN-Cache-Control: max-age=31536000
+
+/index.css
+  Cache-Control: public, max-age=604800, must-revalidate
+  CDN-Cache-Control: public, max-age=604800
+  Cloudflare-CDN-Cache-Control: max-age=604800
+
+/index.js
+  Cache-Control: public, max-age=604800, must-revalidate
+  CDN-Cache-Control: public, max-age=604800
+  Cloudflare-CDN-Cache-Control: max-age=604800
