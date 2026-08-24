@@ -1080,7 +1080,7 @@ img {
 .map-layout-vertical {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 3rem;
   width: 100%;
 }
@@ -1443,6 +1443,7 @@ img {
 
 .ambiente-card-body {
   padding: 1.35rem 1.4rem 1.5rem;
+  text-align: left;
 }
 
 .ambiente-card-body h3 {
@@ -1480,6 +1481,7 @@ img {
   color: var(--text-secondary);
   transition: var(--transition-smooth);
   text-decoration: none;
+  text-align: left;
 }
 
 .doc-card:hover,
@@ -1639,6 +1641,7 @@ img {
   display: flex;
   align-items: flex-end;
   justify-content: center;
+  background-image: url('/images/background_055.jpg');
   background-size: cover;
   background-position: center;
   padding-bottom: 2.5rem;
@@ -1697,6 +1700,7 @@ img {
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: flex-start;
+  text-align: left;
 }
 
 .cluster-card-detalhe {
@@ -1705,6 +1709,7 @@ img {
   border-radius: var(--border-radius-lg);
   padding: 2.5rem;
   box-shadow: var(--shadow-premium);
+  text-align: left;
 }
 
 .cluster-card-detalhe h3 {
@@ -2274,7 +2279,10 @@ img {
 .docs-projeto-section > .container,
 .comparacao-section > .container,
 .tabs-section > .container,
-.imobiliarias-section > .container {
+.imobiliarias-section > .container,
+.section-padding > .container.cluster-grid,
+.section-padding > .container.map-layout-vertical,
+.section-padding > .container:not(.cluster-grid):not(.map-layout-vertical):not(.estrutura-container):not(.faq-layout-grid) {
   text-align: left;
 }
 
@@ -2284,9 +2292,15 @@ img {
 .diferenciais-section .section-subtitle,
 .docs-projeto-section .section-subtitle,
 .comparacao-section .section-subtitle,
-.tabs-section > .container > p {
+.tabs-section > .container > p,
+.tabs-section > .container > .section-subtitle {
   margin-left: 0;
   margin-right: 0;
+}
+
+.tabs-section > .container > .section-subtitle {
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
 }
 
 .ficha-section h2::after,
@@ -2296,7 +2310,10 @@ img {
 .docs-projeto-section h2::after,
 .comparacao-section h2::after,
 .tabs-section > .container > h2::after,
-.imobiliarias-section h2::after {
+.imobiliarias-section h2::after,
+.section-padding > .container.cluster-grid h2::after,
+.cluster-grid h2::after,
+.map-header h2::after {
   margin-left: 0;
   margin-right: 0;
 }
