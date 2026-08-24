@@ -470,7 +470,316 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // 7. Correção de Links Locais para o protocolo file:// (Duplo clique offline)
+  // 7. Botão flutuante + formulário multi-step — Enviar proposta
+  // ==========================================================================
+  // Cadastre em https://formspree.io (grátis) e cole a URL do formulário abaixo.
+  // Alternativas: Web3Forms (e-mail), Google Sheets + Apps Script, Neon + Worker.
+  const PROPOSAL_FORM_ENDPOINT = 'https://formspree.io/f/meajbggp';
+
+  (function initProposalForm() {
+    const whatsappFloat = document.querySelector('.whatsapp-float');
+    if (!whatsappFloat) return;
+
+    if (!document.querySelector('.site-float-stack')) {
+      const stack = document.createElement('div');
+      stack.className = 'site-float-stack';
+      whatsappFloat.parentNode.insertBefore(stack, whatsappFloat);
+      stack.appendChild(whatsappFloat);
+    }
+
+    if (!document.querySelector('.proposal-float')) {
+      const proposalAside = document.createElement('aside');
+      proposalAside.className = 'proposal-float';
+      proposalAside.setAttribute('aria-label', 'Enviar proposta de compra');
+      proposalAside.innerHTML = `
+        <button type="button" class="proposal-float-btn" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal">
+          <span class="proposal-float-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </span>
+          <span class="proposal-float-label">Fazer oferta?</span>
+        </button>`;
+      document.querySelector('.site-float-stack').prepend(proposalAside);
+    }
+
+    if (document.getElementById('proposalModal')) return;
+
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="proposal-modal-overlay" id="proposalModal" role="dialog" aria-modal="true" aria-labelledby="proposalModalTitle" tabindex="-1">
+        <div class="proposal-modal">
+          <button type="button" class="proposal-modal-close" id="proposalModalClose" aria-label="Fechar formulário">&#10005;</button>
+          <div class="proposal-modal-header">
+            <p class="proposal-modal-kicker">Casa no Felicità</p>
+            <h2 class="proposal-modal-title" id="proposalModalTitle">Enviar proposta</h2>
+            <div class="proposal-steps" aria-hidden="true">
+              <span class="proposal-step-dot is-active" data-step-dot="0"></span>
+              <span class="proposal-step-dot" data-step-dot="1"></span>
+              <span class="proposal-step-dot" data-step-dot="2"></span>
+            </div>
+          </div>
+          <div class="proposal-modal-body">
+            <form id="proposalForm" novalidate>
+              <div class="proposal-honeypot" aria-hidden="true">
+                <label>Não preencha<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+              </div>
+              <input type="hidden" name="_subject" value="Nova proposta — casasg.com">
+              <input type="hidden" name="pagina_origem" id="proposalPageOrigin">
+
+              <div class="proposal-panel is-active" data-step="0">
+                <p class="proposal-panel-title">Seus dados de contato</p>
+                <div class="proposal-field">
+                  <label for="proposalName">Nome completo *</label>
+                  <input type="text" id="proposalName" name="nome" required autocomplete="name">
+                </div>
+                <div class="proposal-field">
+                  <label for="proposalEmail">E-mail *</label>
+                  <input type="email" id="proposalEmail" name="email" required autocomplete="email">
+                </div>
+                <div class="proposal-field">
+                  <label for="proposalPhone">WhatsApp / telefone *</label>
+                  <input type="tel" id="proposalPhone" name="telefone" required autocomplete="tel" placeholder="(54) 99999-9999">
+                </div>
+              </div>
+
+              <div class="proposal-panel" data-step="1">
+                <p class="proposal-panel-title">Sua oferta</p>
+                <div class="proposal-field">
+                  <label for="proposalValue">Valor proposto (R$) *</label>
+                  <input type="text" id="proposalValue" name="valor_proposta" required inputmode="decimal" placeholder="Ex.: 900.000">
+                </div>
+                <div class="proposal-field">
+                  <label for="proposalPayment">Forma de pagamento *</label>
+                  <select id="proposalPayment" name="forma_pagamento" required>
+                    <option value="">Selecione...</option>
+                    <option value="A vista">À vista</option>
+                    <option value="Financiamento">Financiamento bancário</option>
+                    <option value="Financiamento + FGTS">Financiamento + FGTS</option>
+                    <option value="Permuta">Permuta (troca por outro imóvel)</option>
+                    <option value="Combinacao">Combinação / outra forma</option>
+                  </select>
+                </div>
+                <div class="proposal-field" id="proposalPermutaField" hidden>
+                  <label for="proposalPermuta">Detalhes da permuta</label>
+                  <textarea id="proposalPermuta" name="detalhes_permuta" placeholder="Descreva o imóvel ou condição oferecida"></textarea>
+                </div>
+              </div>
+
+              <div class="proposal-panel" data-step="2">
+                <p class="proposal-panel-title">Confirmação</p>
+                <div class="proposal-summary" id="proposalSummary" aria-live="polite"></div>
+                <div class="proposal-field">
+                  <label for="proposalMessage">Mensagem (opcional)</label>
+                  <textarea id="proposalMessage" name="mensagem" placeholder="Prazo, condições ou observações"></textarea>
+                </div>
+                <label class="proposal-check">
+                  <input type="checkbox" id="proposalConsent" name="consentimento_lgpd" value="sim" required>
+                  <span>Autorizo o uso dos meus dados para contato sobre esta proposta, conforme a finalidade informada neste site.</span>
+                </label>
+              </div>
+
+              <div class="proposal-panel" data-step="success" hidden>
+                <div class="proposal-success">
+                  <div class="proposal-success-icon" aria-hidden="true">&#10003;</div>
+                  <p class="proposal-panel-title">Proposta enviada!</p>
+                  <p>Recebemos sua oferta. Entraremos em contato em breve pelo e-mail ou WhatsApp informado.</p>
+                </div>
+              </div>
+
+              <p class="proposal-error" id="proposalError" role="alert"></p>
+
+              <div class="proposal-actions" id="proposalActions">
+                <button type="button" class="btn btn-ghost" id="proposalPrev" hidden>Voltar</button>
+                <button type="button" class="btn btn-primary" id="proposalNext">Continuar</button>
+                <button type="submit" class="btn btn-primary" id="proposalSubmit" hidden>Enviar proposta</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>`);
+
+    const modal = document.getElementById('proposalModal');
+    const openBtn = document.getElementById('proposalFloatBtn');
+    const closeBtn = document.getElementById('proposalModalClose');
+    const form = document.getElementById('proposalForm');
+    const panels = Array.from(form.querySelectorAll('.proposal-panel[data-step]'));
+    const dots = Array.from(document.querySelectorAll('[data-step-dot]'));
+    const prevBtn = document.getElementById('proposalPrev');
+    const nextBtn = document.getElementById('proposalNext');
+    const submitBtn = document.getElementById('proposalSubmit');
+    const actions = document.getElementById('proposalActions');
+    const errorEl = document.getElementById('proposalError');
+    const summaryEl = document.getElementById('proposalSummary');
+    const paymentSelect = document.getElementById('proposalPayment');
+    const permutaField = document.getElementById('proposalPermutaField');
+    const pageOrigin = document.getElementById('proposalPageOrigin');
+    let currentStep = 0;
+    let lastFocus = null;
+
+    const formatCurrency = (value) => {
+      const digits = value.replace(/\D/g, '');
+      if (!digits) return '';
+      const num = Number(digits);
+      return num.toLocaleString('pt-BR');
+    };
+
+    const openModal = () => {
+      lastFocus = document.activeElement;
+      currentStep = 0;
+      form.reset();
+      permutaField.hidden = true;
+      errorEl.classList.remove('is-visible');
+      errorEl.textContent = '';
+      panels.forEach((p) => p.classList.remove('is-active'));
+      panels[0].classList.add('is-active');
+      updateControls();
+      pageOrigin.value = window.location.href;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    };
+
+    const updateControls = () => {
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === currentStep);
+        dot.classList.toggle('is-done', i < currentStep);
+      });
+      prevBtn.hidden = currentStep === 0;
+      nextBtn.hidden = currentStep === 2;
+      submitBtn.hidden = currentStep !== 2;
+    };
+
+    const showError = (msg) => {
+      errorEl.textContent = msg;
+      errorEl.classList.add('is-visible');
+    };
+
+    const validateStep = (step) => {
+      errorEl.classList.remove('is-visible');
+      if (step === 0) {
+        const name = document.getElementById('proposalName');
+        const email = document.getElementById('proposalEmail');
+        const phone = document.getElementById('proposalPhone');
+        if (!name.value.trim()) return showError('Informe seu nome.'), false;
+        if (!email.checkValidity()) return showError('Informe um e-mail válido.'), false;
+        if (!phone.value.trim()) return showError('Informe telefone ou WhatsApp.'), false;
+      }
+      if (step === 1) {
+        const value = document.getElementById('proposalValue');
+        const payment = document.getElementById('proposalPayment');
+        if (!value.value.trim()) return showError('Informe o valor da proposta.'), false;
+        if (!payment.value) return showError('Selecione a forma de pagamento.'), false;
+      }
+      if (step === 2) {
+        const consent = document.getElementById('proposalConsent');
+        if (!consent.checked) return showError('Confirme o uso dos dados para contato.'), false;
+      }
+      return true;
+    };
+
+    const buildSummary = () => {
+      const name = document.getElementById('proposalName').value.trim();
+      const email = document.getElementById('proposalEmail').value.trim();
+      const phone = document.getElementById('proposalPhone').value.trim();
+      const value = document.getElementById('proposalValue').value.trim();
+      const payment = document.getElementById('proposalPayment').value;
+      const permuta = document.getElementById('proposalPermuta').value.trim();
+      summaryEl.innerHTML = `
+        <strong>${name}</strong><br>
+        ${email} · ${phone}<br><br>
+        <strong>Oferta:</strong> R$ ${value}<br>
+        <strong>Pagamento:</strong> ${payment}${permuta ? `<br><strong>Permuta:</strong> ${permuta}` : ''}`;
+    };
+
+    const goToStep = (step) => {
+      panels.forEach((p) => p.classList.remove('is-active'));
+      panels[step].classList.add('is-active');
+      currentStep = step;
+      updateControls();
+    };
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+
+    paymentSelect.addEventListener('change', () => {
+      const isPermuta = paymentSelect.value === 'Permuta' || paymentSelect.value === 'Combinacao';
+      permutaField.hidden = !isPermuta;
+    });
+
+    document.getElementById('proposalValue').addEventListener('input', (e) => {
+      e.target.value = formatCurrency(e.target.value);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 0) goToStep(currentStep - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (!validateStep(currentStep)) return;
+      if (currentStep === 1) buildSummary();
+      if (currentStep < 2) goToStep(currentStep + 1);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validateStep(2)) return;
+
+      if (!PROPOSAL_FORM_ENDPOINT) {
+        showError('Formulário em configuração. Por enquanto, envie sua proposta pelo WhatsApp.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      nextBtn.disabled = true;
+      errorEl.classList.remove('is-visible');
+
+      try {
+        const response = await fetch(PROPOSAL_FORM_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.error || 'Não foi possível enviar. Tente novamente.');
+        }
+
+        panels.forEach((p) => p.classList.remove('is-active'));
+        form.querySelector('[data-step="success"]').classList.add('is-active');
+        form.querySelector('[data-step="success"]').hidden = false;
+        actions.hidden = true;
+        dots.forEach((d) => d.classList.add('is-done'));
+      } catch (err) {
+        showError(err.message || 'Erro ao enviar. Tente pelo WhatsApp.');
+      } finally {
+        submitBtn.disabled = false;
+        nextBtn.disabled = false;
+      }
+    });
+  })();
+
+  // ==========================================================================
+  // 8. Correção de Links Locais para o protocolo file:// (Duplo clique offline)
   // ==========================================================================
   if (window.location.protocol === 'file:') {
     const localLinks = document.querySelectorAll('a[href]');
