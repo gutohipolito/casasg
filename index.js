@@ -645,12 +645,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       scrubTrigger = ScrollTrigger.create({
         trigger: root,
-        start: 'top 58%',
-        end: compact ? 'bottom 40%' : '+=460',
-        pin: !compact,
-        pinSpacing: true,
-        anticipatePin: compact ? 0 : 1,
-        scrub: compact ? 0.9 : 0.7,
+        start: 'top 65%',
+        end: 'bottom 45%',
+        pin: false,
+        scrub: compact ? 0.9 : 0.65,
         invalidateOnRefresh: true,
         onUpdate(self) {
           if (userTookControl) return;
@@ -758,10 +756,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="proposal-chat-panel" id="proposalChatPanel">
             <button type="button" class="proposal-chat-dismiss" id="proposalChatDismiss" aria-label="Minimizar">&#10005;</button>
             <button type="button" class="proposal-chat-bubble" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal">
-              <span class="proposal-chat-copy">
-                <span class="proposal-chat-eyebrow">Casa no Felicità</span>
-                <span class="proposal-chat-text">Fazer oferta?</span>
-              </span>
+            <span class="proposal-chat-copy">
+              <span class="proposal-chat-text">Fazer oferta?</span>
+            </span>
             </button>
           </div>
           <button type="button" class="proposal-chat-launcher" id="proposalChatLauncher" aria-label="Abrir oferta" aria-expanded="true" aria-controls="proposalChatPanel">
