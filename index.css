@@ -1641,7 +1641,8 @@ img {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background-image: url('/images/background_055.jpg');
+  background-image: url('images/background_055.jpg');
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   padding-bottom: 2.5rem;
