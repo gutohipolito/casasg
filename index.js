@@ -345,9 +345,19 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Galeria em grade
+    // Galeria completa (showcase) — não abrir lightbox após arrastar;
+    // clique em slide inativo só navega até ele
     document.querySelectorAll('.galeria-item').forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        if (btn.dataset.dragged === '1') {
+          e.preventDefault();
+          btn.dataset.dragged = '0';
+          return;
+        }
+        if (btn.classList.contains('galeria-slide') && !btn.classList.contains('is-active')) {
+          e.preventDefault();
+          return;
+        }
         const img = btn.querySelector('img');
         const src = img?.getAttribute('data-gallery-src') || img?.getAttribute('src');
         if (src) openFromSrc(src);
@@ -468,6 +478,177 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ==========================================================================
+  // 6b. Galeria completa — showcase GSAP (drag + snap + destaque)
+  // ==========================================================================
+  (function initGaleriaShowcase() {
+    const root = document.getElementById('galeriaShowcase');
+    const track = document.getElementById('galeriaShowcaseTrack');
+    const viewport = root?.querySelector('.galeria-showcase-viewport');
+    const prevBtn = document.getElementById('galeriaShowcasePrev');
+    const nextBtn = document.getElementById('galeriaShowcaseNext');
+    const counter = document.getElementById('galeriaShowcaseCounter');
+    if (!root || !track || !viewport) return;
+
+    const slides = Array.from(track.querySelectorAll('.galeria-slide'));
+    if (slides.length === 0) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasGsap = typeof gsap !== 'undefined' && typeof Draggable !== 'undefined';
+
+    if (!hasGsap) {
+      root.classList.add('no-gsap');
+      slides.forEach((s) => s.classList.add('is-active'));
+      return;
+    }
+
+    gsap.registerPlugin(Draggable);
+    if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
+
+    let activeIndex = 0;
+    let didDrag = false;
+
+    const getOffsetForIndex = (index) => {
+      const slide = slides[index];
+      if (!slide) return 0;
+      const viewportWidth = viewport.clientWidth;
+      const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+      return Math.round(viewportWidth / 2 - slideCenter);
+    };
+
+    const updateActive = (index) => {
+      activeIndex = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('is-active', i === activeIndex);
+        slide.setAttribute('aria-current', i === activeIndex ? 'true' : 'false');
+      });
+      if (counter) counter.textContent = `${activeIndex + 1} / ${slides.length}`;
+    };
+
+    const goTo = (index, animate = true) => {
+      const next = Math.max(0, Math.min(index, slides.length - 1));
+      updateActive(next);
+      const x = getOffsetForIndex(next);
+      if (!animate || reduceMotion) {
+        gsap.set(track, { x });
+        if (draggable) draggable.update();
+        return;
+      }
+      gsap.to(track, {
+        x,
+        duration: 0.75,
+        ease: 'power3.out',
+        onUpdate: () => { if (draggable) draggable.update(); },
+        onComplete: () => { if (draggable) draggable.update(); },
+      });
+    };
+
+    const nearestIndex = (x) => {
+      let best = 0;
+      let bestDist = Infinity;
+      slides.forEach((_, i) => {
+        const dist = Math.abs(x - getOffsetForIndex(i));
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      return best;
+    };
+
+    let draggable = null;
+
+    const setupDraggable = () => {
+      if (draggable) {
+        draggable.kill();
+        draggable = null;
+      }
+      if (reduceMotion) return;
+
+      draggable = Draggable.create(track, {
+        type: 'x',
+        inertia: false,
+        dragClickables: true,
+        allowContextMenu: true,
+        edgeResistance: 0.85,
+        bounds: {
+          minX: getOffsetForIndex(slides.length - 1) - 40,
+          maxX: getOffsetForIndex(0) + 40,
+        },
+        onPress() {
+          didDrag = false;
+          viewport.classList.add('is-dragging');
+          gsap.killTweensOf(track);
+        },
+        onDrag() {
+          if (Math.abs(this.x - this.startX) > 8 || Math.abs(this.y - this.startY) > 8) {
+            didDrag = true;
+          }
+          updateActive(nearestIndex(this.x));
+        },
+        onRelease() {
+          viewport.classList.remove('is-dragging');
+          if (didDrag) {
+            slides.forEach((slide) => { slide.dataset.dragged = '1'; });
+            setTimeout(() => {
+              slides.forEach((slide) => { slide.dataset.dragged = '0'; });
+            }, 50);
+          }
+          goTo(nearestIndex(this.x));
+        },
+      })[0];
+    };
+
+    updateActive(0);
+    gsap.set(track, { x: getOffsetForIndex(0) });
+    setupDraggable();
+
+    prevBtn?.addEventListener('click', () => goTo(activeIndex - 1));
+    nextBtn?.addEventListener('click', () => goTo(activeIndex + 1));
+
+    slides.forEach((slide, i) => {
+      slide.addEventListener('click', () => {
+        if (slide.dataset.dragged === '1') return;
+        if (!slide.classList.contains('is-active')) goTo(i);
+      });
+    });
+
+    viewport.setAttribute('tabindex', '0');
+    viewport.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goTo(activeIndex - 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goTo(activeIndex + 1);
+      }
+    });
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        setupDraggable();
+        goTo(activeIndex, false);
+      }, 150);
+    });
+
+    if (!reduceMotion && typeof ScrollTrigger !== 'undefined') {
+      gsap.from(viewport, {
+        opacity: 0,
+        y: 28,
+        duration: 0.85,
+        ease: 'power2.out',
+        clearProps: 'opacity,transform',
+        scrollTrigger: {
+          trigger: root,
+          start: 'top 78%',
+          once: true,
+        },
+      });
+    }
+  })();
 
   // ==========================================================================
   // 7. Botão flutuante + formulário multi-step — Enviar proposta
