@@ -125,7 +125,7 @@ Ao responder perguntas do tipo “quais casas estão caras?” ou “compare pre
 ## 5. Tecnologia e automação
 
 - Automação local sem fio, centralizada em HUB
-- Assistente: Alexa (caixas embutidas no banheiro da suíte, escritório e sala)
+- Assistente: Alexa embutida no banheiro da suíte (gesso)
 - Controla: fechadura digital, ACs (suíte e home office), aquecedor Junker, TVs e sensores de ambiente
 
 ---

@@ -1753,14 +1753,33 @@ img {
 
 .tech-intro-section {
   position: relative;
-  background-image:
-    linear-gradient(105deg, rgba(10, 12, 10, 0.96) 0%, rgba(10, 12, 10, 0.9) 42%, rgba(10, 12, 10, 0.78) 100%),
-    url('images/internas/escritorio.jpeg');
+  isolation: isolate;
+  overflow: hidden;
+  background-image: url('images/internas/escritorio.jpeg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
+}
+
+.tech-intro-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(10, 12, 10, 0.94) 0%,
+    rgba(10, 12, 10, 0.9) 45%,
+    rgba(10, 12, 10, 0.88) 100%
+  );
+  pointer-events: none;
+}
+
+.tech-intro-section > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .tech-intro-section .cluster-card-detalhe {
