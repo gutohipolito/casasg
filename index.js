@@ -490,18 +490,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // 6. Exit Intent Pop-up
+  // 6. Exit Intent Pop-up (somente desktop)
   // ==========================================================================
   const exitPopup = document.getElementById('exitPopup');
   const exitPopupClose = document.getElementById('exitPopupClose');
 
   if (exitPopup && exitPopupClose) {
     const STORAGE_KEY = 'casasg_exit_popup_shown';
+    const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    const isNarrow = window.matchMedia('(max-width: 900px)').matches;
+    // Mobile/tablet: sem popup automático — só exit-intent real no desktop.
+    const exitPopupEnabled = !isTouchDevice && !isNarrow;
     let popupShown = false;
-    let mobileTimer = null;
 
-    // Exibir o pop-up (apenas 1x por sessão)
     const showExitPopup = () => {
+      if (!exitPopupEnabled) return;
       if (popupShown || sessionStorage.getItem(STORAGE_KEY)) return;
       popupShown = true;
       sessionStorage.setItem(STORAGE_KEY, '1');
@@ -510,38 +513,29 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = 'hidden';
     };
 
-    // Fechar o pop-up
     const closeExitPopup = () => {
       exitPopup.classList.remove('active');
       document.body.style.overflow = '';
-      if (mobileTimer) clearTimeout(mobileTimer);
     };
 
-    // --- Trigger Desktop: mouse saindo pelo topo da janela ---
-    // Aguarda 5s antes de ativar o listener para não irritar o usuário ao entrar
-    let exitIntentReady = false;
-    setTimeout(() => { exitIntentReady = true; }, 5000);
+    if (exitPopupEnabled) {
+      // Mouse saindo pelo topo da janela (ação de sair)
+      let exitIntentReady = false;
+      setTimeout(() => { exitIntentReady = true; }, 5000);
 
-    document.addEventListener('mouseleave', (e) => {
-      if (exitIntentReady && e.clientY < 10) {
-        showExitPopup();
-      }
-    });
-
-    // --- Trigger Mobile: timer de 10 segundos em dispositivos touch ---
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-      mobileTimer = setTimeout(showExitPopup, 10000);
+      document.addEventListener('mouseleave', (e) => {
+        if (exitIntentReady && e.clientY < 10) {
+          showExitPopup();
+        }
+      });
     }
 
-    // --- Fechar: botão X ---
     exitPopupClose.addEventListener('click', closeExitPopup);
 
-    // --- Fechar: clicar no overlay (fora do card) ---
     exitPopup.addEventListener('click', (e) => {
       if (e.target === exitPopup) closeExitPopup();
     });
 
-    // --- Fechar: tecla Escape (apenas quando o lightbox não está ativo) ---
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && exitPopup.classList.contains('active')) {
         closeExitPopup();
@@ -583,7 +577,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let scrubTrigger = null;
 
     const isCompact = () => window.matchMedia('(max-width: 700px)').matches;
-    const scrubSlideCount = () => Math.min(isCompact() ? 3 : 4, Math.max(slides.length - 1, 0));
+    // No mobile: menos slides no scrub + mais distância de scroll = sensação mais lenta
+    const scrubSlideCount = () => Math.min(isCompact() ? 2 : 4, Math.max(slides.length - 1, 0));
 
     const getOffsetForIndex = (index) => {
       const slide = slides[index];
@@ -628,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       gsap.to(track, {
         x,
-        duration: 0.75,
+        duration: isCompact() ? 1.05 : 0.75,
         ease: 'power3.out',
         onUpdate: () => { if (draggable) draggable.update(); },
         onComplete: () => { if (draggable) draggable.update(); },
@@ -715,10 +710,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       scrubTrigger = ScrollTrigger.create({
         trigger: root,
-        start: 'top 65%',
-        end: 'bottom 45%',
+        start: compact ? 'top 75%' : 'top 65%',
+        // Mobile: precisa rolar bem mais para avançar os slides
+        end: compact ? '+=180%' : 'bottom 45%',
         pin: false,
-        scrub: compact ? 0.9 : 0.65,
+        scrub: compact ? 2.2 : 0.65,
         invalidateOnRefresh: true,
         onUpdate(self) {
           if (userTookControl) return;
