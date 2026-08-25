@@ -670,6 +670,8 @@ document.addEventListener('DOMContentLoaded', () => {
         inertia: false,
         dragClickables: true,
         allowContextMenu: true,
+        allowNativeTouchScrolling: true,
+        minimumMovement: 6,
         edgeResistance: 0.85,
         bounds: {
           minX: getOffsetForIndex(slides.length - 1) - 40,
@@ -702,19 +704,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const setupScrollScrub = () => {
       killScrub();
+      // Mobile: scrub no scroll causa jump pro topo — só drag/setas.
+      if (isCompact()) {
+        root.classList.remove('is-scrubbing');
+        return;
+      }
       if (reduceMotion || userTookControl || typeof ScrollTrigger === 'undefined') return;
       if (scrubSlideCount() < 1) return;
 
-      const compact = isCompact();
       root.classList.add('is-scrubbing');
 
       scrubTrigger = ScrollTrigger.create({
         trigger: root,
-        start: compact ? 'top 75%' : 'top 65%',
-        // Mobile: precisa rolar bem mais para avançar os slides
-        end: compact ? '+=180%' : 'bottom 45%',
+        start: 'top 65%',
+        end: 'bottom 45%',
         pin: false,
-        scrub: compact ? 2.2 : 0.65,
+        scrub: 0.65,
         invalidateOnRefresh: true,
         onUpdate(self) {
           if (userTookControl) return;
@@ -763,22 +768,31 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Ignora resize só de altura (barra de URL do mobile) — evita jump pro topo
+    let lastWidth = window.innerWidth;
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
+        const width = window.innerWidth;
+        const widthChanged = Math.abs(width - lastWidth) > 8;
+        lastWidth = width;
+        if (!widthChanged && isCompact()) {
+          goTo(activeIndex, false);
+          return;
+        }
         setupDraggable();
-        if (userTookControl) {
+        if (userTookControl || isCompact()) {
           goTo(activeIndex, false);
         } else {
           setupScrollScrub();
           if (scrubTrigger) applyScrubProgress(scrubTrigger.progress);
           else goTo(activeIndex, false);
         }
-      }, 160);
+      }, 200);
     });
 
-    if (!reduceMotion && typeof ScrollTrigger !== 'undefined') {
+    if (!reduceMotion && !isCompact() && typeof ScrollTrigger !== 'undefined') {
       gsap.from(viewport, {
         opacity: 0,
         y: 28,
