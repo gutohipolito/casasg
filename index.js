@@ -1,4 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+  // ==========================================================================
+  // 0. Tracking — WhatsApp + proposta (GA4 / Google Ads)
+  // ==========================================================================
+  const trackEvent = (name, params = {}) => {
+    if (typeof gtag !== 'function') return;
+    gtag('event', name, params);
+  };
+
+  const whatsappPlacement = (el) => {
+    if (el.closest('.whatsapp-float')) return 'float';
+    if (el.closest('.hero') || el.closest('.hero-actions')) return 'hero';
+    if (el.closest('.exit-popup') || el.closest('#exitPopup')) return 'exit_popup';
+    if (el.closest('.site-footer') || el.closest('footer')) return 'footer';
+    if (el.classList.contains('btn-whatsapp') || el.closest('.btn-whatsapp')) return 'cta_button';
+    if (el.closest('.ficha-section') || el.closest('.ficha')) return 'ficha';
+    return 'other';
+  };
+
+  document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="whatsapp.com/send"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const placement = whatsappPlacement(link);
+      trackEvent('whatsapp_click', {
+        event_category: 'contact',
+        event_label: placement,
+        placement,
+        link_url: link.href,
+        page_path: window.location.pathname || '/',
+      });
+    });
+  });
   
   // ==========================================================================
   // 1. Menu Responsivo (Mobile Navigation Toggle)
@@ -1095,6 +1126,12 @@ document.addEventListener('DOMContentLoaded', () => {
           const errData = await response.json().catch(() => ({}));
           throw new Error(errData.error || 'Não foi possível enviar. Tente novamente.');
         }
+
+        trackEvent('proposal_submit', {
+          event_category: 'lead',
+          event_label: 'proposal_form',
+          page_path: window.location.pathname || '/',
+        });
 
         panels.forEach((p) => p.classList.remove('is-active'));
         successPanel.hidden = false;
