@@ -9,11 +9,12 @@ on:
 
 concurrency:
   group: deploy-casasg
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,7 +26,9 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          log-level: minimal
+          protocol: ftp
+          timeout: 120000
+          log-level: standard
           exclude: |
             **/.git*
             **/.github/**
