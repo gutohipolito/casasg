@@ -1,11 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================================================
-  // 0. Tracking — WhatsApp + proposta (GA4 / Google Ads)
+  // 0. Tracking — WhatsApp + proposta (GA4 + Formspree)
   // ==========================================================================
+  // Mesmo endpoint do formulário de oferta; filtre no Formspree pelo campo "tipo".
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/meajbggp';
+
   const trackEvent = (name, params = {}) => {
-    if (typeof gtag !== 'function') return;
-    gtag('event', name, params);
+    if (typeof gtag === 'function') {
+      gtag('event', name, params);
+    }
+  };
+
+  const logToFormspree = (payload) => {
+    if (!FORMSPREE_ENDPOINT) return;
+    const body = JSON.stringify({
+      _subject: payload.tipo === 'whatsapp_click'
+        ? `Clique WhatsApp (${payload.placement || 'site'}) — casasg.com`
+        : 'Evento — casasg.com',
+      pagina: window.location.href,
+      caminho: window.location.pathname || '/',
+      ...payload,
+    });
+
+    try {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(FORMSPREE_ENDPOINT, new Blob([body], { type: 'application/json' }));
+        return;
+      }
+      fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body,
+        keepalive: true,
+      }).catch(() => {});
+    } catch (_) {
+      // Tracking não deve bloquear o clique.
+    }
   };
 
   const whatsappPlacement = (el) => {
@@ -27,6 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
         placement,
         link_url: link.href,
         page_path: window.location.pathname || '/',
+      });
+      logToFormspree({
+        tipo: 'whatsapp_click',
+        placement,
+        link_url: link.href,
       });
     });
   });
@@ -764,7 +803,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================================================
   // Cadastre em https://formspree.io (grátis) e cole a URL do formulário abaixo.
   // Alternativas: Web3Forms (e-mail), Google Sheets + Apps Script, Neon + Worker.
-  const PROPOSAL_FORM_ENDPOINT = 'https://formspree.io/f/meajbggp';
+  // Endpoint compartilhado com tracking de WhatsApp (campo "tipo").
+  const PROPOSAL_FORM_ENDPOINT = FORMSPREE_ENDPOINT;
 
   (function initProposalForm() {
     const whatsappFloat = document.querySelector('.whatsapp-float');
@@ -1112,6 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const data = Object.fromEntries(new FormData(form));
         if (!String(data.email || '').trim()) delete data.email;
+        data.tipo = 'proposal_submit';
 
         const response = await fetch(PROPOSAL_FORM_ENDPOINT, {
           method: 'POST',
