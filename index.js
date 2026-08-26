@@ -14,32 +14,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const logToFormspree = (payload) => {
     if (!FORMSPREE_ENDPOINT) return;
-    const body = JSON.stringify({
+
+    const data = {
       _subject: payload.tipo === 'whatsapp_click'
         ? `Clique WhatsApp (${payload.placement || 'site'}) — casasg.com`
         : 'Evento — casasg.com',
       pagina: window.location.href,
       caminho: window.location.pathname || '/',
       ...payload,
+    };
+
+    const body = new URLSearchParams();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value == null || value === '') return;
+      body.append(key, String(value));
     });
 
-    try {
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(FORMSPREE_ENDPOINT, new Blob([body], { type: 'application/json' }));
-        return;
-      }
-      fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body,
-        keepalive: true,
-      }).catch(() => {});
-    } catch (_) {
-      // Tracking não deve bloquear o clique.
-    }
+    // Links do WhatsApp abrem em nova aba — fetch com keepalive é mais confiável
+    // que sendBeacon+JSON (Formspree exige Accept: application/json).
+    fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: body.toString(),
+      keepalive: true,
+      mode: 'cors',
+    }).catch(() => {});
   };
 
   const whatsappPlacement = (el) => {
