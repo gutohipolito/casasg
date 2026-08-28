@@ -942,7 +942,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="proposal-panel-title">Sua oferta</p>
                 <div class="proposal-field">
                   <label for="proposalValue">Valor proposto (R$) *</label>
-                  <input type="text" id="proposalValue" name="valor_proposta" required inputmode="decimal" placeholder="Ex.: 900.000">
+                  <input type="text" id="proposalValue" name="valor_proposta" required inputmode="decimal" placeholder="Ex.: 955.000">
                 </div>
                 <div class="proposal-field">
                   <label for="proposalPayment">Forma de pagamento *</label>

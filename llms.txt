@@ -1,6 +1,6 @@
 # Casa no Loteamento Felicità
 
-> Uma casa geminada com elevado padrão de acabamentos à venda em Farroupilha (RS), no Loteamento Felicità (bairro São Francisco). Anúncio R$ 955.000,00 = valor do imóvel R$ 900.000,00 + comissão de corretagem de 6% (padrão local). 108,25 m² privativos, lote 180,15 m², 3 dormitórios (1 suíte), home office, marcenaria sob medida, portas internas laqueadas, fechadura digital, Alexa na suíte e segurança monitorada. Documentação regularizada para financiamento e FGTS. Versão completa / pronta para morar.
+> Uma casa geminada com elevado padrão de acabamentos à venda em Farroupilha (RS), no Loteamento Felicità (bairro São Francisco). **R$ 955.000,00**. 108,25 m² privativos, lote 180,15 m², 3 dormitórios (1 suíte), home office, marcenaria sob medida, portas internas laqueadas, fechadura digital, Alexa na suíte e segurança monitorada. Documentação regularizada para financiamento e FGTS. Versão completa / pronta para morar.
 
 Site oficial: https://casasg.com/
 Ficha completa para IA: https://casasg.com/llms-full.txt
@@ -8,7 +8,6 @@ Ficha completa para IA: https://casasg.com/llms-full.txt
 ## Ficha rápida
 
 - **Preço anunciado**: R$ 955.000,00
-- **Composição do preço**: R$ 900.000,00 (imóvel) + comissão de corretagem de **6%** (padrão em Farroupilha) para o corretor que intermediár a venda
 - **Versão oferecida**: somente a versão completa (acabamento alto padrão e itens listados inclusos)
 - **Endereço**: Rua Coronel Pena de Moraes, 1706 — São Francisco, Farroupilha - RS, Brasil (CEP 95180-000)
 - **Coordenadas**: -29.2274, -51.3414
