@@ -835,40 +835,21 @@ document.addEventListener('DOMContentLoaded', () => {
       proposalAside.setAttribute('aria-label', 'Enviar proposta de compra');
       proposalAside.hidden = true;
       proposalAside.innerHTML = `
-        <div class="proposal-chat" id="proposalChat">
-          <div class="proposal-chat-panel" id="proposalChatPanel">
-            <button type="button" class="proposal-chat-dismiss" id="proposalChatDismiss" aria-label="Minimizar">&#10005;</button>
-            <button type="button" class="proposal-chat-bubble" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal">
-            <span class="proposal-chat-copy">
-              <span class="proposal-chat-text">Fazer oferta?</span>
-            </span>
-            </button>
-          </div>
-          <button type="button" class="proposal-chat-launcher" id="proposalChatLauncher" aria-label="Abrir oferta" aria-expanded="true" aria-controls="proposalChatPanel">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <line x1="10" y1="9" x2="8" y2="9"/>
+        <button type="button" class="proposal-float-btn" id="proposalFloatBtn" aria-haspopup="dialog" aria-controls="proposalModal" aria-label="Enviar proposta">
+          <span class="proposal-float-rings" aria-hidden="true">
+            <span class="proposal-float-ring"></span>
+            <span class="proposal-float-ring proposal-float-ring--delay"></span>
+          </span>
+          <span class="proposal-float-core">
+            <svg class="proposal-float-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <circle cx="7" cy="7" r="1.5" fill="currentColor" stroke="none"/>
             </svg>
-          </button>
-        </div>`;
+          </span>
+        </button>`;
       document.querySelector('.site-float-stack').prepend(proposalAside);
 
-      const chatRoot = document.getElementById('proposalChat');
-      const chatDismiss = document.getElementById('proposalChatDismiss');
-      const chatLauncher = document.getElementById('proposalChatLauncher');
-      const COLLAPSE_KEY = 'casasg_proposal_chat_collapsed';
       let revealed = false;
-
-      const setCollapsed = (collapsed) => {
-        chatRoot.classList.toggle('is-collapsed', collapsed);
-        chatLauncher.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-        chatLauncher.setAttribute('aria-label', collapsed ? 'Abrir oferta' : 'Enviar proposta');
-        if (collapsed) sessionStorage.setItem(COLLAPSE_KEY, '1');
-        else sessionStorage.removeItem(COLLAPSE_KEY);
-      };
 
       const getRevealThreshold = () => Math.max(280, Math.round(window.innerHeight * 0.5));
 
@@ -876,24 +857,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (revealed) return;
         if (window.scrollY < getRevealThreshold()) return;
         revealed = true;
-        if (sessionStorage.getItem(COLLAPSE_KEY) === '1') setCollapsed(true);
         proposalAside.hidden = false;
         requestAnimationFrame(() => proposalAside.classList.add('is-visible'));
         window.removeEventListener('scroll', onScrollReveal);
       };
-
-      chatDismiss.addEventListener('click', (e) => {
-        e.stopPropagation();
-        setCollapsed(true);
-      });
-
-      chatLauncher.addEventListener('click', () => {
-        if (chatRoot.classList.contains('is-collapsed')) {
-          setCollapsed(false);
-          return;
-        }
-        document.getElementById('proposalFloatBtn')?.click();
-      });
 
       window.addEventListener('scroll', onScrollReveal, { passive: true });
       onScrollReveal();

@@ -2154,152 +2154,85 @@ img {
 .proposal-float.is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
+  animation: proposal-float-bob 3.6s ease-in-out infinite;
 }
 
-.proposal-chat {
-  position: relative;
-  pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.55rem;
-}
-
-.proposal-chat-panel {
-  position: relative;
-  max-width: min(15.5rem, calc(100vw - 5.5rem));
-  transform-origin: bottom right;
-  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.proposal-chat.is-collapsed .proposal-chat-panel {
-  opacity: 0;
-  transform: translateY(8px) scale(0.92);
-  pointer-events: none;
-  visibility: hidden;
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 0.55rem);
-}
-
-.proposal-chat-dismiss {
-  position: absolute;
-  top: -0.4rem;
-  right: -0.35rem;
-  z-index: 2;
-  width: 1.35rem;
-  height: 1.35rem;
-  border: 1px solid rgba(184, 147, 108, 0.4);
-  border-radius: 50%;
-  background: rgba(18, 16, 14, 0.95);
-  color: var(--text-secondary);
-  font-size: 0.7rem;
-  line-height: 1;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.proposal-chat-dismiss:hover,
-.proposal-chat-dismiss:focus-visible {
-  color: var(--color-gold-light);
-  border-color: var(--color-gold);
-  outline: none;
-}
-
-.proposal-chat-bubble {
-  position: relative;
-  display: block;
-  width: 100%;
-  padding: 0.75rem 1rem 0.85rem;
-  border: 1px solid rgba(184, 147, 108, 0.45);
-  border-radius: 1rem 1rem 0.35rem 1rem;
-  cursor: pointer;
-  text-align: left;
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  background: linear-gradient(145deg, rgba(32, 28, 24, 0.98) 0%, rgba(18, 16, 14, 0.98) 100%);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(184, 147, 108, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-/* Ponteiro do balão → centro do ícone (alinhado à direita) */
-.proposal-chat-bubble::after {
-  content: '';
-  position: absolute;
-  right: 1.15rem;
-  bottom: -7px;
-  width: 12px;
-  height: 12px;
-  background: rgba(18, 16, 14, 0.98);
-  border-right: 1px solid rgba(184, 147, 108, 0.45);
-  border-bottom: 1px solid rgba(184, 147, 108, 0.45);
-  transform: rotate(45deg);
-}
-
-.proposal-chat-bubble:hover,
-.proposal-chat-bubble:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(184, 147, 108, 0.75);
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(184, 147, 108, 0.3);
-  outline: none;
-}
-
-.proposal-chat-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.12rem;
-  min-width: 0;
-  padding-right: 0.35rem;
-}
-
-.proposal-chat-text {
-  font-size: 0.92rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 1.25;
-  white-space: nowrap;
-}
-
-.proposal-chat-launcher {
+.proposal-float-btn {
   pointer-events: auto;
   position: relative;
-  z-index: 1;
-  width: 3rem;
-  height: 3rem;
-  border: 1px solid rgba(184, 147, 108, 0.5);
-  border-radius: 50%;
-  cursor: pointer;
   display: grid;
   place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  cursor: pointer;
   color: var(--bg-primary);
-  background: linear-gradient(145deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+  background: linear-gradient(145deg, var(--color-gold-light) 0%, var(--color-gold) 55%, #9a7348 100%);
   box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(184, 147, 108, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+    0 12px 28px rgba(184, 147, 108, 0.42),
+    0 0 0 1px rgba(184, 147, 108, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
 }
 
-.proposal-chat-launcher:hover,
-.proposal-chat-launcher:focus-visible {
-  transform: translateY(-2px) scale(1.04);
+.proposal-float-core {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+
+.proposal-float-svg {
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.proposal-float-rings {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.proposal-float-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(184, 147, 108, 0.55);
+  animation: proposal-ring-pulse 2.4s ease-out infinite;
+}
+
+.proposal-float-ring--delay {
+  animation-delay: 1.2s;
+  border-color: rgba(232, 201, 155, 0.5);
+}
+
+.proposal-float-btn:hover,
+.proposal-float-btn:focus-visible {
+  transform: translateY(-3px) scale(1.06);
   box-shadow:
-    0 14px 30px rgba(0, 0, 0, 0.48),
-    0 0 0 1px rgba(184, 147, 108, 0.35);
+    0 16px 36px rgba(184, 147, 108, 0.52),
+    0 0 0 1px rgba(184, 147, 108, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
   outline: none;
 }
 
-.proposal-chat:not(.is-collapsed) .proposal-chat-launcher {
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.4),
-    0 0 0 3px rgba(184, 147, 108, 0.18);
+@keyframes proposal-float-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes proposal-ring-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.15);
+    opacity: 0;
+  }
 }
 
 .proposal-optional {
@@ -2580,25 +2513,9 @@ img {
 }
 
 @media (max-width: 576px) {
-  .proposal-chat-panel {
-    max-width: min(14rem, calc(100vw - 4.75rem));
-  }
-
-  .proposal-chat-bubble {
-    padding: 0.65rem 0.85rem 0.75rem;
-  }
-
-  .proposal-chat-bubble::after {
-    right: 1.15rem;
-  }
-
-  .proposal-chat-text {
-    font-size: 0.86rem;
-  }
-
-  .proposal-chat-launcher {
-    width: 2.85rem;
-    height: 2.85rem;
+  .proposal-float-btn {
+    width: 52px;
+    height: 52px;
   }
 
   .proposal-modal {
@@ -2626,10 +2543,9 @@ img {
 
 @media (prefers-reduced-motion: reduce) {
   .proposal-float,
-  .proposal-chat-bubble,
-  .proposal-chat-panel,
-  .proposal-chat-launcher {
-    transition: none;
+  .proposal-float.is-visible,
+  .proposal-float-ring {
+    animation: none;
   }
 
   .proposal-panel.is-active {
