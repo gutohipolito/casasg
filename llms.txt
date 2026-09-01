@@ -10,7 +10,7 @@ Ficha completa para IA: https://casasg.com/llms-full.txt
 - **Preço anunciado**: R$ 955.000,00
 - **Versão oferecida**: somente a versão completa (acabamento alto padrão e itens listados inclusos)
 - **Endereço**: Rua Coronel Pena de Moraes, 1706 — São Francisco, Farroupilha - RS, Brasil (CEP 95180-000)
-- **Coordenadas**: -29.2274, -51.3414
+- **Coordenadas**: -29.22623, -51.36923
 - **Google Maps**: https://maps.app.goo.gl/1SFiZFR9TrvDwLMK9
 - **Tipo**: Casa geminada da mesma construtora do loteamento; posição solar Norte; localização privilegiada na rua
 - **Área privativa**: 108,25 m² | **Terreno**: 180,15 m² | **Pátio fundos**: 71,90 m²

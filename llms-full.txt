@@ -32,7 +32,7 @@ Codificação: UTF-8 com acentuação em português. Interpretar caracteres acen
 - Bairro São Francisco — Loteamento Felicità
 - Farroupilha - RS, Brasil
 - CEP 95180-000
-- Coordenadas: latitude -29.2274, longitude -51.3414
+- Coordenadas: latitude -29.22623, longitude -51.36923
 - Posição solar: Norte
 - Observação de localização: rua com posição privilegiada dentro do loteamento em relação a unidades básicas equivalentes de outras ruas
 
